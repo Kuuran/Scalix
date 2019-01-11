@@ -1,5 +1,7 @@
 Digit [0-9]
-Letter  [a-zA-Z]
+LetterMaj [A-Z]
+LetterMin [a-z]
+Letter ({LetterMaj}|{LetterMin})
 LD  ({Letter}|{Digit})
 Delim [ \n\t\r]
 
@@ -42,5 +44,6 @@ void lexError(char c) {
 %%
 {Delim}+        { /* espaces : rien ! on passe au token suivant */ }
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
-{Letter}{LD}*   { yylval.S = strdup(yytext); return ID; }
+{LetterMin}{LD}*   { yylval.S = strdup(yytext); return ID; }
+{LetterMaj}{LD}*   {yylval.S = strdup(yytext); return IDCLASS; }
 %%
