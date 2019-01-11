@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "scalix.h"
-#include "tp_y.h" 
+#include "scalix_y.h" 
 
 extern int yyparse();
 extern int yylineno;
