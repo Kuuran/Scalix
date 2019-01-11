@@ -17,7 +17,7 @@
 %nonassoc unary
 
 %{
-#include "tp.h"     /* les definition des types et les etiquettes des noeuds */
+#include "scalix.h"     /* les definition des types et les etiquettes des noeuds */
 
 extern int yylex();	/* fournie par Flex */
 extern void yyerror();  /* definie dans tp.c */
