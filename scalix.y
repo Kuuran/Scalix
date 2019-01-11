@@ -15,6 +15,8 @@
 %right Else
 %left ADD SUB
 %left MUL DIV
+%left POINT 
+%right AFFECT
 %nonassoc unary
 
 %{
@@ -113,14 +115,12 @@ nomClasseOpt 	: COL IDCLASS
 		|
 		;
 
-E	: ID
-	| CST
-	| BRACO E BRACC
+E	: BRACO E BRACC
 	| BRACO IDCLASS E BRACC
 	| selec
 	| instanciation	
-	/*| envMess
-	| expr*/
+	| envMess
+	| expr
 	;
 
 //ident	: ID
@@ -135,6 +135,9 @@ selec	:E POINT ID
 instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
 ;
 
+envMess	: ID POINT ID
+;
+
 blocInst 	: inst
 | inst blocInst
 ;
@@ -143,7 +146,7 @@ inst	: E SCOL
 | bloc
 | RETURN SCOL
 | aff
-| IF E THEN inst ELSE inst 
+| IF expr1 THEN inst ELSE inst 
 ;
 
 bloc 	: CBRACO listOptInst CBRACC
@@ -180,7 +183,7 @@ defConstObj	: DEF IDCLASS IS CBRACO corps CBRACC
 
 
 
-/*expr	:expr ADD expr 
+expr	:expr ADD expr 
 	|expr SUB expr
 	|expr MUL expr
 	|expr DIV expr
@@ -190,7 +193,7 @@ expr1	:expr RELOP expr
 	;
 expr2	: CST 
 	| ID 
-	;*/
+	;
 
 
 
