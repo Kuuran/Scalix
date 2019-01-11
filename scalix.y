@@ -1,12 +1,13 @@
-%token If Then Else Begin End ADD SUB MUL DIV AFFECT
-%token <S> ID
+%token IF THEN ELSE ADD SUB MUL DIV AFFECT SCOL AND BRACO BRACC COMA CBRACO CBRACC CLASS EXT IS OBJ NEW OVR DEF RETURN POINT VAR COL
+%token <S> ID IDCLASS
 %token <I> CST
 %token <C> RELOP
 
 /* On realise la version simple dans laquelle les declarations sont
  * stockees dans l'AST comme le reste du programme
  */
-%type <T> expr bexpr decl declLOpt
+/*%type <T> expr bexpr decl declLOpt*/
+
 
 /* indications de precedence (en ordre croissant) et d'associativite. Les
  * operateurs sur une meme ligne (separes par un espace) ont la meme priorite.
@@ -24,6 +25,184 @@ extern void yyerror();  /* definie dans tp.c */
 %}
 
 %%
+programme	: listOptDef blocInst 
+;
+
+listOptDef	: listDef 
+|
+;
+
+listDef	:Def 
+	| Def listDef
+	;
+	
+Def	:defClasse
+	| defObj
+;
+
+defClasse : CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+;
+
+listOptParam	: listParam
+		|
+		;
+
+listParam	:param
+		|param COMA listParam
+		;
+
+param	:ID COL IDCLASS
+	| VAR ID COL IDCLASS
+	;
+	
+heritOpt	:EXT ID
+;
+
+defConst	:DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO corps CBRACC
+;
+
+corps	: listAff
+	|
+	;
+	
+listAff	: aff
+	| aff listAff
+	;
+
+superClasseOpt	: IDCLASS BRACO listOptParam2 BRACC
+		;
+
+listOptParam2	:listParam2
+		|
+		;
+
+listParam2	: ID
+		| ID COMA listParam2
+		;
+
+listOptChamps	: listChamps
+|
+;
+listChamps	: champ
+		| champ listChamps
+		;
+
+champ	: VAR ID COL ID SCOL
+;
+
+listOptMeth	: listMeth
+	|
+	;
+
+listMeth	: methode
+	| methode listMeth
+	;
+		 
+methode: overrideOpt DEF typeMethode
+;
+
+overrideOpt	:OVR
+		| 
+;
+
+typeMethode	: ID BRACO listOptParam BRACC COL IDCLASS AFFECT E
+		| ID BRACO listOptParam BRACC COL nomClasseOpt IS bloc
+		;
+
+nomClasseOpt 	: COL IDCLASS
+		|
+		;
+
+E	: ID
+	| CST
+	| BRACO E BRACC
+	| BRACO IDCLASS E BRACC
+	| selec
+	| instanciation	
+	/*| envMess
+	| expr*/
+	;
+
+//ident	: ID
+/*| this
+| super
+| result*/
+//;
+
+selec	:E POINT ID
+;
+
+instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
+;
+
+blocInst 	: inst
+| inst blocInst
+;
+
+inst	: E SCOL
+| bloc
+| RETURN SCOL
+| aff
+| IF E THEN inst ELSE inst 
+;
+
+bloc 	: CBRACO listOptInst CBRACC
+|CBRACO listDecl IS listInst CBRACC
+;
+
+listOptInst	: listInst
+|
+;
+
+listInst	: inst listInst
+| inst
+;
+
+listDecl	: decl listDecl 
+| decl
+;
+
+decl	: ID COL IDCLASS expOpt SCOL
+;
+
+expOpt	: AFFECT E
+|
+;
+
+aff 	: ID AFFECT E SCOL 
+;
+
+defObj	: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
+;
+
+defConstObj	: DEF IDCLASS IS CBRACO corps CBRACC
+;
+
+
+
+/*expr	:expr ADD expr 
+	|expr SUB expr
+	|expr MUL expr
+	|expr DIV expr
+	| expr2 
+	;
+expr1	:expr RELOP expr
+	;
+expr2	: CST 
+	| ID 
+	;*/
+
+
+
+
+
+
+
+
+
+
+
+/*
 programme : declLOpt Begin expr End
                { printAST($1, $3); evalMain($3, evalDecls($1)); }
 ;
@@ -46,20 +225,23 @@ expr : If bexpr Then expr Else expr
 /* Ici on ne conserve pas le + unaire puisqu'il n'influe pas dans la
  * suite des traitements
  */
-| ADD expr %prec unary  { $$ = $2; }
+//| ADD expr %prec unary  { $$ = $2; }
 /* Pour l'AST on represente - e  par 0 - e , comme cela on ne s'en soucie plus
  * dans la Suite. simple meme si pas optimal
  */
+ /*
 | SUB expr %prec unary  { $$ = makeTree(Eminus, 2, makeLeafInt(CONST, 0), $2); }
 | CST		        { $$ = makeLeafInt(CONST, $1); }
 | ID 			{ $$ = makeLeafStr(IDVAR, $1); }
+
+*/
 /* pas besoin de conserver les parentheses dans l'AST. Elles ne servent a
  * l'utilisateur que pour preciser la structure de son expression
  */
-| '(' expr ')'		{ $$ = $2; }
-;
+//| '(' expr ')'		{ $$ = $2; }
+//;
 
 /* Expression booleenne seulement presente dans un IF */
-bexpr : expr RELOP expr { $$ = makeTree($2, 2, $1, $3); }
+/*bexpr : expr RELOP expr { $$ = makeTree($2, 2, $1, $3); }
 | '(' bexpr ')'		{ $$ = $2; }
-;
+;*/
