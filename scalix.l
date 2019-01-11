@@ -4,8 +4,8 @@ LD  ({Letter}|{Digit})
 Delim [ \n\t\r]
 
 %{
-#include "tp.h"
-#include "tp_y.h"	/* produit par Bison */
+#include "scalix.h"
+#include "scalix_y.h"	/* produit par Bison */
 #include <string.h>	/* pour strdup */
 
 extern char *strdup(const char *s);
