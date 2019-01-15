@@ -69,6 +69,10 @@ typedef struct _Tree {
     } u;
 } Tree, *TreeP;
 
+typedef union {
+	char *S;
+	int I;
+} Var;
 
 /* la structure ci-dessous permet de cosntruire des listes de paires
  * (variable, valeur entiere).
@@ -77,7 +81,7 @@ typedef struct _Tree {
  */
 typedef struct _Decl
 { char *name;
-    int val;
+    Var val;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
