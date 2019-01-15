@@ -53,6 +53,7 @@ typedef int bool;
 #define Epoint	24
 #define Evar	25
 #define Ecol	26
+#define Estrg	27
 
 
 
