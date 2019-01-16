@@ -71,16 +71,16 @@ listAff	: aff
 	| aff listAff
 	;
 
-superClasseOpt	: IDCLASS BRACO listOptParam2 BRACC
+superClasseOpt	: IDCLASS BRACO listEOpt BRACC
 		;
 
-listOptParam2	:listParam2
+/*listOptParam2	:listParam2
 		|
 		;
 
 listParam2	: ID
 		| ID COMA listParam2
-		;
+		;*/
 
 listOptChamps	: listChamps
 |
@@ -89,7 +89,7 @@ listChamps	: champ
 		| champ listChamps
 		;
 
-champ	: VAR ID COL ID SCOL
+champ	: VAR ID COL IDCLASS SCOL
 ;
 
 listOptMeth	: listMeth
@@ -108,7 +108,7 @@ overrideOpt	:OVR
 ;
 
 typeMethode	: ID BRACO listOptParam BRACC COL IDCLASS AFFECT E
-		| ID BRACO listOptParam BRACC COL nomClasseOpt IS bloc
+		| ID BRACO listOptParam BRACC nomClasseOpt IS bloc
 		;
 
 nomClasseOpt 	: COL IDCLASS
@@ -142,29 +142,12 @@ listE	:E
 ELight	:ID
 	|CST
 	|appel
+	| IDCLASS
 	;
 
-//ident	: ID
-/*| this
-| super
-| result*/
-//;
-//appel	: E POINT apresPoint
-
-//apresPoint	: envMess
-//;
-/*
-
-selec	:E POINT ID
-;*/
-
-instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
+instanciation	: NEW IDCLASS BRACO listEOpt BRACC
 ;
 
-
-/*envMessOpt : 
-|ID BRACO listOptParam2 BRACC POINT envMessOpt
-;*/
 
 blocInst 	: inst
 | inst blocInst
@@ -200,7 +183,8 @@ expOpt	: AFFECT E
 |
 ;
 
-aff 	: ID AFFECT E SCOL 
+aff 	: selection AFFECT E SCOL 
+| ID AFFECT E SCOL 
 ;
 
 defObj	: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
@@ -208,84 +192,3 @@ defObj	: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
 
 defConstObj	: DEF IDCLASS IS CBRACO corps CBRACC
 ;
-
-
-
-
-/*
-programme : declLOpt Begin expr End
-               { printAST($1, $3); evalMain($3, evalDecls($1)); }
-;
-
-declLOpt :	  { $$ = NIL(Tree); }
-|  declLOpt decl  { $$ = makeTree(LIST, 2, $1, $2); }
-;
-
-
-decl: ID AFFECT expr ';'
-    { $$ = makeTree(DECL, 2, makeLeafStr(ID, $1), $3); }
-;
-
-expr : If bexpr Then expr Else expr
-                 
-E	: BRACO E BRACC
-	| BRACO IDCLASS E BRACC
-	| selec
-	| instanciation	
-	| envMess
-	| expr
-	;
-
-//ident	: ID
-/*| this
-| super
-| result*/
-//;
-
-/*selec	:E POINT ID
-;
-
-instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
-;
-
-envMess	: ID POINT ID
-;
-
-blocInst 	: inst
-| inst blocInst
-;
-
-inst	: E SCOL
-| bloc
-| RETURN SCOL
-| aff
-| IF expr1 THEN inst ELSE inst 
-;
-       { $$ = makeTree(ITE, 3, $2, $4, $6); }
-| expr ADD expr 	{ $$ = makeTree(Eadd, 2, $1, $3); }
-| expr SUB expr 	{ $$ = makeTree(Eminus, 2, $1, $3); }
-| expr MUL expr         { $$ = makeTree(Emult, 2, $1, $3); }
-| expr DIV expr	        { $$ = makeTree(Ediv, 2, $1, $3); }
-/* Ici on ne conserve pas le + unaire puisqu'il n'influe pas dans la
- * suite des traitements
- */
-//| ADD expr %prec unary  { $$ = $2; }
-/* Pour l'AST on represente - e  par 0 - e , comme cela on ne s'en soucie plus
- * dans la Suite. simple meme si pas optimal
- */
- /*
-| SUB expr %prec unary  { $$ = makeTree(Eminus, 2, makeLeafInt(CONST, 0), $2); }
-| CST		        { $$ = makeLeafInt(CONST, $1); }
-| ID 			{ $$ = makeLeafStr(IDVAR, $1); }
-
-*/
-/* pas besoin de conserver les parentheses dans l'AST. Elles ne servent a
- * l'utilisateur que pour preciser la structure de son expression
- */
-//| '(' expr ')'		{ $$ = $2; }
-//;
-
-/* Expression booleenne seulement presente dans un IF */
-/*bexpr : expr RELOP expr { $$ = makeTree($2, 2, $1, $3); }
-| '(' bexpr ')'		{ $$ = $2; }
-;*/
