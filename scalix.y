@@ -12,12 +12,12 @@
 /* indications de precedence (en ordre croissant) et d'associativite. Les
  * operateurs sur une meme ligne (separes par un espace) ont la meme priorite.
  */
-%right Else
+
+%left RELOP
 %left ADD SUB
 %left MUL DIV
 %left POINT 
-%right AFFECT
-%nonassoc unary
+
 
 %{
 #include "scalix.h"     /* les definition des types et les etiquettes des noeuds */
@@ -115,12 +115,34 @@ nomClasseOpt 	: COL IDCLASS
 		|
 		;
 
-E	: BRACO E BRACC
-	| BRACO IDCLASS E BRACC
-	| selec
-	| instanciation	
-	| envMess
-	| expr
+E	:E RELOP E
+	|E ADD E 
+	|E SUB E
+	|E MUL E
+	|E DIV E
+	|instanciation
+	|appel
+	|ELight
+	|BRACO E BRACC
+	|BRACO IDCLASS E BRACC
+	;
+	
+appel	:envoi
+	|selection
+	;
+envoi	:ELight POINT ID BRACO listEOpt BRACC
+;
+selection	:ELight POINT ID
+;
+listEOpt	:listE 
+|
+;
+listE	:E
+|E COMA listE
+;
+ELight	:ID
+	|CST
+	|appel
 	;
 
 //ident	: ID
@@ -128,15 +150,22 @@ E	: BRACO E BRACC
 | super
 | result*/
 //;
+//appel	: E POINT apresPoint
+
+//apresPoint	: envMess
+//;
+/*
 
 selec	:E POINT ID
-;
+;*/
 
 instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
 ;
 
-envMess	: ID POINT ID
-;
+
+/*envMessOpt : 
+|ID BRACO listOptParam2 BRACC POINT envMessOpt
+;*/
 
 blocInst 	: inst
 | inst blocInst
@@ -146,7 +175,7 @@ inst	: E SCOL
 | bloc
 | RETURN SCOL
 | aff
-| IF expr1 THEN inst ELSE inst 
+| IF E THEN inst ELSE inst 
 ;
 
 bloc 	: CBRACO listOptInst CBRACC
@@ -183,27 +212,6 @@ defConstObj	: DEF IDCLASS IS CBRACO corps CBRACC
 
 
 
-expr	:expr ADD expr 
-	|expr SUB expr
-	|expr MUL expr
-	|expr DIV expr
-	| expr2 
-	;
-expr1	:expr RELOP expr
-	;
-expr2	: CST 
-	| ID 
-	;
-
-
-
-
-
-
-
-
-
-
 
 /*
 programme : declLOpt Begin expr End
@@ -220,7 +228,41 @@ decl: ID AFFECT expr ';'
 ;
 
 expr : If bexpr Then expr Else expr
-                        { $$ = makeTree(ITE, 3, $2, $4, $6); }
+                 
+E	: BRACO E BRACC
+	| BRACO IDCLASS E BRACC
+	| selec
+	| instanciation	
+	| envMess
+	| expr
+	;
+
+//ident	: ID
+/*| this
+| super
+| result*/
+//;
+
+/*selec	:E POINT ID
+;
+
+instanciation	: NEW IDCLASS BRACO listOptParam2 BRACC
+;
+
+envMess	: ID POINT ID
+;
+
+blocInst 	: inst
+| inst blocInst
+;
+
+inst	: E SCOL
+| bloc
+| RETURN SCOL
+| aff
+| IF expr1 THEN inst ELSE inst 
+;
+       { $$ = makeTree(ITE, 3, $2, $4, $6); }
 | expr ADD expr 	{ $$ = makeTree(Eadd, 2, $1, $3); }
 | expr SUB expr 	{ $$ = makeTree(Eminus, 2, $1, $3); }
 | expr MUL expr         { $$ = makeTree(Emult, 2, $1, $3); }
