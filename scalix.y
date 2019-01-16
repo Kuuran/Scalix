@@ -121,7 +121,6 @@ E	:E RELOP E
 	|E MUL E
 	|E DIV E
 	|instanciation
-	|appel
 	|ELight
 	|BRACO E BRACC
 	|BRACO IDCLASS E BRACC
