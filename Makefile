@@ -18,6 +18,9 @@ scalix.o: scalix.c scalix_y.h scalix.h
 scalix_l.o: scalix_l.c scalix_y.h
 	$(CC) $(CFLAGS) -Wno-unused-function -Wno-implicit-function-declaration -c scalix_l.c
 
+scalix_l.c:scalix.l
+	flex --yylineno -oscalix_l.c scalix.l
+
 scalix_y.o : scalix_y.c
 	$(CC) $(CFLAGS) -c scalix_y.c
 

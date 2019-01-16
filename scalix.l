@@ -42,8 +42,48 @@ void lexError(char c) {
 %}
 
 %%
+"+"		{yylval.C = '+'; return ADD;}
+"-"		{yylval.C = '-'; return SUB;}
+"*"		{yylval.C = '*'; return MUL;}
+"/"		{yylval.C = '/'; return DIV;}
+
+":="		{yylval.S = strdup(yytext); return AFFECT;}
+";"		{yylval.C = ';'; return SCOL;}
+"&"		{yylval.C = '&'; return AND;}
+"("		{yylval.C = '('; return BRACO;}
+")"		{yylval.C = ')'; return BRACC;}
+","		{yylval.C = ','; return COMA;}
+"{"		{yylval.C = '{'; return CBRACO;}
+"}"		{yylval.C = '}'; return CBRACC;}
+
+"="		{yylval.C = EQ; return RELOP;}
+"<>"		{yylval.C = NE; return RELOP;}
+"<"		{yylval.C = LT; return RELOP;}
+"<="		{yylval.C = LE; return RELOP;}
+">"		{yylval.C = GT; return RELOP;}
+">="		{yylval.C = GE; return RELOP;}
+
+"if"		{yylval.S = strdup(yytext); return IF;}
+"then"		{yylval.S = strdup(yytext); return THEN;}
+"else"		{yylval.S = strdup(yytext); return ELSE;}
+
+"class"		{yylval.S = strdup(yytext); return CLASS;}
+"extends"	{yylval.S = strdup(yytext); return EXT;}
+"is"		{yylval.S = strdup(yytext); return IS;}
+"object"	{yylval.S = strdup(yytext); return OBJ;}
+"new"		{yylval.S = strdup(yytext); return NEW;}
+
+"override"	{yylval.S = strdup(yytext); return OVR;}
+"def"		{yylval.S = strdup(yytext); return DEF;}
+"return"	{yylval.S = strdup(yytext); return RETURN;}
+"."		{yylval.C = '.'; return POINT;}
+
+"var"		{yylval.S = strdup(yytext); return VAR;}
+":"		{yylval.C = ':'; return COL;}
+
 {Delim}+        { /* espaces : rien ! on passe au token suivant */ }
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
 {LetterMin}{LD}*   { yylval.S = strdup(yytext); return ID; }
 {LetterMaj}{LD}*   {yylval.S = strdup(yytext); return IDCLASS; }
+.		{ lexError(yytext[0]);}
 %%

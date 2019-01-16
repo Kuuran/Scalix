@@ -1,0 +1,7 @@
+1+1;
+1*1;
+x := 1;
+(5+7);
+class Hello
+if(1=1) then x := 5;
+else x := 7;
