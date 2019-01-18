@@ -29,7 +29,7 @@ extern void yyerror();  /* definie dans tp.c */
 %}
 
 %%
-programme	: listOptDef blocInst 
+programme	: listOptDef bloc 
 ;
 
 listOptDef	: listDef 
@@ -66,25 +66,10 @@ heritOpt	:EXT ID
 defConst	:DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
 ;
 
-/*corps	: listAff
-	|
-	;
-	
-listAff	: aff
-	| aff listAff
-	;*/
 
 superClasseOpt	: IDCLASS BRACO listEOpt BRACC
 		|
 		;
-
-/*listOptParam2	:listParam2
-		|
-		;
-
-listParam2	: ID
-		| ID COMA listParam2
-		;*/
 
 listOptChamps	: listChamps
 |
@@ -157,11 +142,11 @@ ELight	:ID
 instanciation	: NEW IDCLASS BRACO listEOpt BRACC
 ;
 
-
+/*
 blocInst 	: inst
 | inst blocInst
 ;
-
+*/
 inst	: E SCOL
 | bloc
 | RETURN SCOL
