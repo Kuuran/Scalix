@@ -4,6 +4,16 @@ LetterMin [a-z]
 Letter ({LetterMaj}|{LetterMin})
 LD  ({Letter}|{Digit})
 Delim [ \n\t\r]
+TSG [^{GUIL}]*
+GUIL ["]
+
+TSE [^*]
+ETOILE "*"
+TSES [^*/]
+CommentInterieur ({TSE}|({ETOILE}+{TSES}))*{ETOILE}*
+CommentLigne "//"[^\n]*
+
+
 
 %{
 #include "scalix.h"
@@ -42,6 +52,10 @@ void lexError(char c) {
 %}
 
 %%
+"/*"{CommentInterieur}"*/"	{printf("do nothing\n");/*do nothing*/}
+{CommentLigne}			{printf("do nothing\n");}
+{GUIL}{TSG}{GUIL}		{yylval.S = strdup(yytext); return STRG;}
+
 "+"		{yylval.C = '+'; return ADD;}
 "-"		{yylval.C = '-'; return SUB;}
 "*"		{yylval.C = '*'; return MUL;}
@@ -85,5 +99,7 @@ void lexError(char c) {
 {Digit}+        { yylval.I = strtol(yytext, NULL, 0); return(CST); }
 {LetterMin}{LD}*   { yylval.S = strdup(yytext); return ID; }
 {LetterMaj}{LD}*   {yylval.S = strdup(yytext); return IDCLASS; }
+
+
 .		{ lexError(yytext[0]);}
 %%
