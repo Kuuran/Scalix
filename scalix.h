@@ -42,6 +42,18 @@ typedef int bool;
 #define GE 	13
 #define LIST	14
 #define DECL	15
+#define Eclass	16
+#define Eext	17
+#define Eis	18
+#define Eobj	19
+#define Enew	20
+#define Eovr	21
+#define Edef	22
+#define Ereturn	23
+#define Epoint	24
+#define Evar	25
+#define Ecol	26
+
 
 
 /* Definition d'un arbre de syntaxe abstraite */
@@ -69,7 +81,6 @@ typedef struct _Decl
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
-
 /* Type pour la valeur de retour de Flex et les actions de Bison
  * le premier champ est necessaire pour Flex.
  * les autres correspondent aux variantes utilisees dans les actions
@@ -82,6 +93,27 @@ typedef union
     VarDeclP D;	/* liste de paires (variable, valeur) */
     TreeP T;	/* AST */
 } YYSTYPE;
+
+struct _Champs {
+	YYSTYPE champ;
+	struct _Champs *next;
+};
+
+struct _Methodes {
+	char* nom;
+	VarDeclP sesParam;
+	struct _Methodes *next;
+};
+
+typedef struct _Class
+{
+	struct _Champs *sesChamps;
+	struct _Methodes *sesMethodes;
+	struct _Class *next, *prev;
+} Class, *ClassP;
+
+
+
 
 
 /* necessaire sinon par defaut Bison definit YYSTYPE comme int ! */
