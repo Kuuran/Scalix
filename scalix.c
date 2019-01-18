@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "scalix.h"
 #include "scalix_y.h"
 
