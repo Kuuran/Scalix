@@ -52,8 +52,8 @@ void lexError(char c) {
 %}
 
 %%
-"/*"{CommentInterieur}"*/"	{printf("do nothing\n");/*do nothing*/}
-{CommentLigne}			{printf("do nothing\n");}
+"/*"{CommentInterieur}"*/"	{/*do nothing*/}
+{CommentLigne}			{/*do nothing*/}
 {GUIL}{TSG}{GUIL}		{yylval.S = strdup(yytext); return STRG;}
 
 "+"		{yylval.C = '+'; return ADD;}
