@@ -4,7 +4,7 @@ LetterMin [a-z]
 Letter ({LetterMaj}|{LetterMin})
 LD  ({Letter}|{Digit})
 Delim [ \n\t\r]
-TSG [^{GUIL}]*
+TSG [^"]*
 GUIL ["]
 
 TSE [^*]
