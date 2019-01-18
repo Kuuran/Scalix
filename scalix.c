@@ -216,7 +216,7 @@ void printOpBinaire(char op) {
 }
 
 void printExpr(TreeP tree) {
-    switch (tree->op) {
+     switch (tree->op) {
         case IDVAR :
             printf("%s", tree->u.str); break;
         case CONST:
@@ -227,21 +227,99 @@ void printExpr(TreeP tree) {
             printf(", "); printExpr(getChild(tree, 2)); /* la partie 'else' */
             printf("]");
             break;
+            
         case EQ:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(EQ);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+    	break;
+       
+       
         case NE:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(NE);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+    	break;
+    	
         case GT:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(GT);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+            
+        
         case GE:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(GE);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+        
         case LT:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(LT);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+        
         case LE:
-        case Eadd:
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(LE);
+    	printExpr(getChild(tree, 1));
+    	printf(")");
+        
+       
+        case Eadd: 
+        
+        assert(tree->nbChildren == 2);
+    	printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(Eadd);
+    	printExpr(getChild(tree, 1));
+    	printf(")"); break;
+        
         case Eminus:
-        case Emult:
+        
+        assert(tree->nbChildren == 2);
+        printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(Emult);
+    	printExpr(getChild(tree, 1));
+    	printf(")"); break;
+    	    	
+    	
+    	case Emult:
+    	
+    	assert(tree->nbChildren == 2);
+        printf("(");
+    	printExpr(getChild(tree, 0));
+    	printOpBinaire(Emult);
+    	printExpr(getChild(tree, 1));
+    	printf(")"); break;
+    	    
+
         case Ediv:
-            printf("(");
-            printOpBinaire(tree->op);
-            printf(" "); printExpr(getChild(tree, 0));
-            printf(" "); printExpr(getChild(tree, 1));
-            printf(")"); break;
+            
+        assert(tree->nbChildren == 2);
+        printf("("); 
+        printExpr(getChild(tree, 0));
+        printOpBinaire(Ediv); 
+        printExpr(getChild(tree, 1));
+        printf(")"); break;
+                   
+       
         default:
             fprintf(stderr, "Erreur! etiquette indefinie: %d\n", tree->op);
             exit(UNEXPECTED);
