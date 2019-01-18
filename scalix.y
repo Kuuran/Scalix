@@ -1,4 +1,4 @@
-%token IF THEN ELSE ADD SUB MUL DIV AFFECT SCOL AND BRACO BRACC COMA CBRACO CBRACC CLASS EXT IS OBJ NEW OVR DEF RETURN POINT VAR COL
+%token IF THEN ELSE ADD SUB MUL DIV AFFECT SCOL AND BRACO BRACC COMA CBRACO CBRACC CLASS EXT IS OBJ NEW OVR DEF STRG RETURN POINT VAR COL
 %token <S> ID IDCLASS
 %token <I> CST
 %token <C> RELOP
@@ -16,7 +16,9 @@
 %left RELOP
 %left ADD SUB
 %left MUL DIV
+%nonassoc unary
 %left POINT 
+
 
 
 %{
@@ -40,10 +42,10 @@ listDef	:Def
 	
 Def	:defClasse
 	| defObj
-;
+	;
 
 defClasse : CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
-;
+	;
 
 listOptParam	: listParam
 		|
@@ -58,20 +60,22 @@ param	:ID COL IDCLASS
 	;
 	
 heritOpt	:EXT ID
+		|
+		;
+
+defConst	:DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
 ;
 
-defConst	:DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO corps CBRACC
-;
-
-corps	: listAff
+/*corps	: listAff
 	|
 	;
 	
 listAff	: aff
 	| aff listAff
-	;
+	;*/
 
 superClasseOpt	: IDCLASS BRACO listEOpt BRACC
+		|
 		;
 
 /*listOptParam2	:listParam2
@@ -122,14 +126,17 @@ E	:E RELOP E
 	|E DIV E
 	|instanciation
 	|ELight
-	|BRACO E BRACC
+	
 	|BRACO IDCLASS E BRACC
+	|ADD E %prec unary 
+	|SUB E %prec unary 
 	;
 	
 appel	:envoi
 	|selection
 	;
 envoi	:ELight POINT ID BRACO listEOpt BRACC
+|IDCLASS POINT ID BRACO listEOpt BRACC
 ;
 selection	:ELight POINT ID
 ;
@@ -142,7 +149,9 @@ listE	:E
 ELight	:ID
 	|CST
 	|appel
-	| IDCLASS
+	|STRG
+	|BRACO E BRACC
+	
 	;
 
 instanciation	: NEW IDCLASS BRACO listEOpt BRACC
@@ -190,5 +199,5 @@ aff 	: selection AFFECT E SCOL
 defObj	: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
 ;
 
-defConstObj	: DEF IDCLASS IS CBRACO corps CBRACC
+defConstObj	: DEF IDCLASS IS CBRACO listOptInst CBRACC
 ;
