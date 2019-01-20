@@ -82,7 +82,7 @@ typedef union {
  */
 typedef struct _Decl
 { char *name;
-    Var val;
+    Var value;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 

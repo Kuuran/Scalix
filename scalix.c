@@ -368,8 +368,8 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  */
 VarDeclP declVar(char *name, TreeP tree, VarDeclP decls) {
     if(!noEval) {
-        decls->val = tree->u.val;
-        printf(" nom de la variable = %s valeur = %d\n", name, decls->val);
+        decls->value.I = tree->u.val;
+        printf(" nom de la variable = %s valeur = %d\n", name, decls->value.I);
     }
     return decls;
 }
@@ -459,7 +459,7 @@ int evalIf(TreeP tree, VarDeclP decls) {
  * etait bien declare, donc on doit trouver sa valeur.
  */
 int getValue(TreeP tree, VarDeclP decls) {
-    if(strcmp(tree->u.str, decls->name) == 0) return decls->val;
+    if(strcmp(tree->u.str, decls->name) == 0) return decls->value.I;
     else return getValue(tree, decls->next);
 }
 
