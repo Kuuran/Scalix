@@ -105,22 +105,28 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
-struct _Champs {
-	TypeVar champ;
+typedef struct _Champs {
+	TypeVar* champ;
 	struct _Champs *next;
-};
+} Champs, *ChampsP;
 
-struct _Methodes {
+typedef struct _Param {
+	char *name;
+    TypeVar* value;
+    struct _Param *next;
+} Param, *ParamP;
+
+typedef struct _Methodes {
 	char* nom;
 	VarDeclP sesParam;
 	struct _Methodes *next;
-};
+} Methodes, *MethodesP;
 
 typedef struct _Class
 {
-	struct _Champs *sesChamps;
-	struct _Methodes *sesMethodes;
-	struct _Class *next, *prev;
+	ChampsP sesChamps;
+	MethodesP sesMethodes;
+	struct _Class *sc;
 } Class, *ClassP;
 
 
@@ -159,5 +165,7 @@ int evalMain(TreeP tree, VarDeclP decls);
 
 void codeMain(TreeP tree);
 void Code(TreeP tree);
+
+ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
 
 #endif //PROJET_SCALIX_H
