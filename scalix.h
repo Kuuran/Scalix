@@ -54,6 +54,11 @@ typedef int bool;
 #define Evar	25
 #define Ecol	26
 #define Estrg	27
+#define SELEC   28
+#define Ebrac   29
+#define Eenvoi  30
+#define Ebloc   31
+#define Ecoma   32
 
 typedef struct _Class *ClassP;
 
@@ -100,28 +105,22 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
-typedef struct _Champs {
-	TypeVar* champ;
+struct _Champs {
+	TypeVar champ;
 	struct _Champs *next;
-} Champs, *ChampsP;
+};
 
-typedef struct _Param {
-	char *name;
-    TypeVar* value;
-    struct _Param *next;
-} Param, *ParamP;
-
-typedef struct _Methodes {
+struct _Methodes {
 	char* nom;
 	VarDeclP sesParam;
 	struct _Methodes *next;
-} Methodes, *MethodesP;
+};
 
 typedef struct _Class
 {
-	ChampsP sesChamps;
-	MethodesP sesMethodes;
-	struct _Class *sc;
+	struct _Champs *sesChamps;
+	struct _Methodes *sesMethodes;
+	struct _Class *next, *prev;
 } Class, *ClassP;
 
 
