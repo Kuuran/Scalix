@@ -55,7 +55,7 @@ typedef int bool;
 #define Ecol	26
 #define Estrg	27
 
-
+typedef struct _Class *ClassP;
 
 /* Definition d'un arbre de syntaxe abstraite */
 
@@ -73,7 +73,8 @@ typedef struct _Tree {
 typedef union {
 	char *S;
 	int I;
-} Var;
+	ClassP Classe;
+} TypeVar;
 
 /* la structure ci-dessous permet de cosntruire des listes de paires
  * (variable, valeur entiere).
@@ -82,7 +83,7 @@ typedef union {
  */
 typedef struct _Decl
 { char *name;
-    Var value;
+    TypeVar value;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
@@ -100,7 +101,7 @@ typedef union
 } YYSTYPE;
 
 struct _Champs {
-	YYSTYPE champ;
+	TypeVar champ;
 	struct _Champs *next;
 };
 
