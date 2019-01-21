@@ -100,10 +100,10 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
-struct _Champs {
+typedef struct _Champs {
 	TypeVar* champ;
 	struct _Champs *next;
-};
+} Champs, *ChampsP;
 
 typedef struct _Param {
 	char *name;
@@ -111,16 +111,16 @@ typedef struct _Param {
     struct _Param *next;
 } Param, *ParamP;
 
-struct _Methodes {
+typedef struct _Methodes {
 	char* nom;
 	VarDeclP sesParam;
 	struct _Methodes *next;
-};
+} Methodes, *MethodesP;
 
 typedef struct _Class
 {
-	struct _Champs *sesChamps;
-	struct _Methodes *sesMethodes;
+	ChampsP sesChamps;
+	MethodesP sesMethodes;
 	struct _Class *sc;
 } Class, *ClassP;
 
