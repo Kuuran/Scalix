@@ -101,9 +101,15 @@ typedef union
 } YYSTYPE;
 
 struct _Champs {
-	TypeVar champ;
+	TypeVar* champ;
 	struct _Champs *next;
 };
+
+typedef struct _Param {
+	char *name;
+    TypeVar* value;
+    struct _Param *next;
+} Param, *ParamP;
 
 struct _Methodes {
 	char* nom;
@@ -115,7 +121,7 @@ typedef struct _Class
 {
 	struct _Champs *sesChamps;
 	struct _Methodes *sesMethodes;
-	struct _Class *next, *prev;
+	struct _Class *sc;
 } Class, *ClassP;
 
 
