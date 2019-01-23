@@ -124,6 +124,7 @@ typedef struct _Methodes {
 
 typedef struct _Class
 {
+	char* nom;
 	ChampsP sesChamps;
 	MethodesP sesMethodes;
 	struct _Class *sc;
