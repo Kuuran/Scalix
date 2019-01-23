@@ -118,8 +118,11 @@ typedef struct _Param {
 } Param, *ParamP;
 
 typedef struct _Methodes {
+	bool ovr;
 	char* nom;
 	ParamP sesParam;
+	TypeVar typreRetour;
+	TreeP Bloc
 	struct _Methodes *next;
 } Methodes, *MethodesP;
 
@@ -175,7 +178,7 @@ void Code(TreeP tree);
 
 ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes);
-MethodesP makeMethodes(char* nom, ParamP params, MethodesP nextMethodes);
+MethodesP makeMethodes(bool ovr, char* nom, ParamP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
 
 VarDeclP listeSC = NIL(VarDecl);
 

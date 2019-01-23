@@ -588,12 +588,14 @@ ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes)
 	return result;
 }
 
-MethodesP makeMethodes(char* nom, ParamP params, MethodesP nextMethodes)
+MethodesP makeMethodes(bool ovr, char* nom, ParamP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
+	result->ovr = ovr;
 	result->nom = nom;
 	result->sesParam = params;
 	result->next = nextMethodes;
+	//todo type de Retour à faire avec l'env listeClasse + Integer + String
 	return result;
 
 }
