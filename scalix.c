@@ -572,14 +572,21 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
     result->sesChamps = donneesMembres;
     result->sesMethodes = methodes;
     result->nom = nom;
-    //rajout de ma classe dans la liste des super classes potentielles, on réutilise tmp car il a déja avancé dans la liste ou est déja à la fin
-    while(tmp->next != NIL(VarDecl)){
-        tmp = tmp->next;
+    if(listeSC != NIL(VarDecl)) {
+        //rajout de ma classe dans la liste des super classes potentielles, on réutilise tmp car il a déja avancé dans la liste ou est déja à la fin
+        while (tmp->next != NIL(VarDecl)) {
+            tmp = tmp->next;
+        }
+        tmp->next = malloc(sizeof(VarDeclP));
+        tmp->next->next = NIL(VarDecl);
+        tmp->next->value.Classe = result;
+        tmp->next->name = nom;
+    }else{
+        listeSC = malloc(sizeof(VarDeclP));
+        listeSC->next = NIL(VarDecl);
+        listeSC->value.Classe = result;
+        listeSC->name = nom;
     }
-    tmp->next = malloc(sizeof(VarDeclP));
-    tmp->next->next = NIL(VarDecl);
-    tmp->next->value.Classe = result;
-    tmp->next->name = nom;
 
     return result;
 }
