@@ -550,7 +550,7 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
     //si une superclasse est fournie on teste si elle a déja été définie
     VarDeclP tmp = listeSC;
     if (sc != NIL(Class)) {
-        if (listeSC != NIL(VarDecl)) {
+        if (tmp != NIL(VarDecl)) {
             do{
                 if(tmp->name == sc){
                     result->sc = listeSC->value.Classe;
@@ -558,16 +558,21 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
                 }
                 tmp = tmp->next;
             }while (tmp != NIL(VarDecl));
-            if (result->sc == NIL(Class)){
-                //todo la faut casser la compil parce que ya une erreur
+
+            if (result->sc == NIL(Class)){ //si on ne trouve pas la superclasse dans la liste on a une erreur
+                printf("Erreur : la superclasse %s n'est pas définie.", sc);
+                exit(EXIT_FAILURE);
             }
+        }else{ //si la liste de superclasses est vide on a une erreur
+            printf("Erreur : la superclasse %s n'est pas définie.", sc);
+            exit(EXIT_FAILURE);
         }
     }
 
     result->sesChamps = donneesMembres;
     result->sesMethodes = methodes;
     result->nom = nom;
-    //rajout de ma classe dans la liste des super classes potentielles
+    //rajout de ma classe dans la liste des super classes potentielles, on réutilise tmp car il a déja avancé dans la liste ou est déja à la fin
     while(tmp->next != NIL(VarDecl)){
         tmp = tmp->next;
     }
