@@ -94,7 +94,7 @@ union {
 typedef struct _Decl
 { char *name;
     TypeVar value;
-    enum type { CHAMP , PARAM, RESULT, THIS, INCONNU };
+    enum elmt { CHAMP , PARAM, RESULT, THIS, INCONNU };
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
