@@ -175,4 +175,6 @@ void Code(TreeP tree);
 
 ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
 
+VarDeclP listeSC = NIL(VarDecl);
+
 #endif //PROJET_SCALIX_H
