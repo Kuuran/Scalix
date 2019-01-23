@@ -541,17 +541,41 @@ void Code(TreeP tree)
 
 }
 
-ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc){ //todo faut retrouver la superclasse et l'enregistrer dans le champ sc (c'est pas un char*)
 
-    /*recherche sc
-     *      faut une var globale qui contient ttes les classes creees
-     *      quand on cree une classe on la rajoute a la liste
-     *      si sc non null on la cherche dans la liste et on la met dans le champ*/
+
+ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc){
+
     ClassP result = malloc(sizeof(ClassP));
+
+    //si une superclasse est fournie on teste si elle a déja été définie
+    VarDeclP tmp = listeSC;
+    if (sc != NIL(Class)) {
+        if (listeSC != NIL(VarDecl)) {
+            do{
+                if(tmp->name == sc){
+                    result->sc = listeSC->value.Classe;
+                    break;
+                }
+                tmp = tmp->next;
+            }while (tmp != NIL(VarDecl));
+            if (result->sc == NIL(Class)){
+                //todo la faut casser la compil parce que ya une erreur
+            }
+        }
+    }
+
     result->sesChamps = donneesMembres;
     result->sesMethodes = methodes;
-    //result->sc = sc;
     result->nom = nom;
+    //rajout de ma classe dans la liste des super classes potentielles
+    while(tmp->next != NIL(VarDecl)){
+        tmp = tmp->next;
+    }
+    tmp->next = malloc(sizeof(VarDeclP));
+    tmp->next->next = NIL(VarDecl);
+    tmp->next->value.Classe = result;
+    tmp->next->name = nom;
+
     return result;
 }
 
