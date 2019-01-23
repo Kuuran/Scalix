@@ -44,14 +44,9 @@ typedef int bool;
 #define DECL	15
 #define Eclass	16
 #define Eext	17
-#define Eis	18
-#define Eobj	19
 #define Enew	20
-#define Eovr	21
 #define Edef	22
 #define Ereturn	23
-#define Epoint	24
-#define Evar	25
 #define Ecol	26
 #define Estrg	27
 #define SELEC   28
