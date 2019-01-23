@@ -568,7 +568,7 @@ MethodesP makeMethodes(char* nom, ParamP params, MethodesP nextMethodes)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
 	result->nom = nom;
-	result->params;
+	result->sesParam = params;
 	result->next = nextMethodes;
 	return result;
 
