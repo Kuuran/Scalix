@@ -175,6 +175,7 @@ void Code(TreeP tree);
 
 ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes);
+MethodesP makeMethodes(char* nom, ParamP params, MethodesP nextMethodes);
 
 VarDeclP listeSC = NIL(VarDecl);
 
