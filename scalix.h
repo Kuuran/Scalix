@@ -122,7 +122,7 @@ typedef struct _Methodes {
 	char* nom;
 	ParamP sesParam;
 	TypeVar typreRetour;
-	TreeP Bloc
+	TreeP Bloc;
 	struct _Methodes *next;
 } Methodes, *MethodesP;
 
