@@ -368,8 +368,8 @@ bool checkScope(TreeP tree, VarDeclP lvar) {
  */
 VarDeclP declVar(char *name, TreeP tree, VarDeclP decls) {
     if(!noEval) {
-        decls->value.I = tree->u.val;
-        printf(" nom de la variable = %s valeur = %d\n", name, decls->value.I);
+        decls->value.u.I = tree->u.val;
+        printf(" nom de la variable = %s valeur = %d\n", name, decls->value.u.I);
     }
     return decls;
 }
@@ -459,7 +459,7 @@ int evalIf(TreeP tree, VarDeclP decls) {
  * etait bien declare, donc on doit trouver sa valeur.
  */
 int getValue(TreeP tree, VarDeclP decls) {
-    if(strcmp(tree->u.str, decls->name) == 0) return decls->value.I;
+    if(strcmp(tree->u.str, decls->name) == 0) return decls->value.u.I;
     else return getValue(tree, decls->next);
 }
 
@@ -540,10 +540,10 @@ void Code(TreeP tree)
 {
 
 }
+//todo methode recherche env classe
 
 
-
-ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc){
+ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, MethodesP constructeur, MethodesP methodes, char* sc){ //todo liste de params optionnels qui doivent etre les memes que ceux su constructeur (1e methode de sesmethodes)
 
     ClassP result = malloc(sizeof(ClassP));
 
@@ -553,19 +553,32 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
         if (tmp != NIL(VarDecl)) {
             do{
                 if(tmp->name == sc){
-                    result->sc = listeSC->value.Classe;
+                    result->sc = listeSC->value.u.Classe;
                     break;
                 }
                 tmp = tmp->next;
             }while (tmp != NIL(VarDecl));
 
             if (result->sc == NIL(Class)){ //si on ne trouve pas la superclasse dans la liste on a une erreur
-                printf("Erreur : la superclasse %s n'est pas définie.", sc);
+                printf("Erreur : la superclasse %s n'est pas definie.\n", sc);
                 exit(EXIT_FAILURE);
             }
         }else{ //si la liste de superclasses est vide on a une erreur
-            printf("Erreur : la superclasse %s n'est pas définie.", sc);
+            printf("Erreur : la superclasse %s n'est pas definie.\n", sc);
             exit(EXIT_FAILURE);
+        }
+    }
+
+    //on teste la validité du constructeur pr rapport aux parametres de la classe
+
+    if (lparamConst != NIL(VarDecl)){
+        if(constructeur->sesParam == NIL(VarDecl)){
+            printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
+            exit(EXIT_FAILURE);
+        }
+        MethodesP tmp1 = lparamConst, tmp2 = constructeur->sesParam;
+        while(tmp1 != NIL(Methodes) && tmp2 != NIL(Methodes)){
+            //todo la ya des trucs a finir
         }
     }
 
@@ -579,19 +592,19 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
         }
         tmp->next = malloc(sizeof(VarDeclP));
         tmp->next->next = NIL(VarDecl);
-        tmp->next->value.Classe = result;
+        tmp->next->value.u.Classe = result;
         tmp->next->name = nom;
     }else{
         listeSC = malloc(sizeof(VarDeclP));
         listeSC->next = NIL(VarDecl);
-        listeSC->value.Classe = result;
+        listeSC->value.u.Classe = result;
         listeSC->name = nom;
     }
 
     return result;
 }
 
-ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes)
+ObjP makeObj(char* nom, VarDeclP champs, MethodesP constructeur, MethodesP methodes)
 {
 	ObjP result = malloc(sizeof(ObjP));
 	result->sesChamps = champs;
@@ -600,7 +613,7 @@ ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes)
 	return result;
 }
 
-MethodesP makeMethodes(bool ovr, char* nom, ParamP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc)
+MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
 	result->ovr = ovr;
