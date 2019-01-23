@@ -62,7 +62,7 @@ typedef int bool;
 
 typedef struct _Class *ClassP;
 typedef struct _Obj *ObjP;
-enum { CHAMP , PARAM, RESULT, THIS, INCONNU }
+enum { CHAMP , PARAM, RESULT, THIS, INCONNU };
 /* Definition d'un arbre de syntaxe abstraite */
 
 /* la structure d'un arbre (noeud ou feuille) */
@@ -108,22 +108,7 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
-<<<<<<< HEAD
-/*typedef struct _Champs {
-=======
-typedef struct _Champs {
-	char* name;
->>>>>>> a05ab6cc5399f1fff8f7e751e6e334b9099a604c
-	TypeVar* champ;
-	struct _Champs *next;
-} Champs, *ChampsP;
 
-typedef struct _Param {
-	char *name;
-    TypeVar* value;
-    struct _Param *next;
-} Param, *ParamP;
-*/
 typedef struct _Methodes {
 	bool ovr;
 	char* nom;
@@ -184,7 +169,7 @@ int evalMain(TreeP tree, VarDeclP decls);
 void codeMain(TreeP tree);
 void Code(TreeP tree);
 
-ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
+ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, MethodesP constructeur, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
 
