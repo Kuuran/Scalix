@@ -61,6 +61,7 @@ typedef int bool;
 #define Ecoma   32
 
 typedef struct _Class *ClassP;
+typedef struct _Obj *ObjP;
 
 /* Definition d'un arbre de syntaxe abstraite */
 
