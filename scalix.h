@@ -79,6 +79,7 @@ typedef union {
 	char *S;
 	int I;
 	ClassP Classe;
+	ObjP Object;
 } TypeVar;
 
 /* la structure ci-dessous permet de cosntruire des listes de paires
@@ -130,7 +131,12 @@ typedef struct _Class
 	struct _Class *sc;
 } Class, *ClassP;
 
-
+typedef struct _Obj
+{
+	char* nom;
+	ChampsP sesChamps;
+	MethodesP sesMethodes
+} Obj, *ObjP;
 
 
 
