@@ -119,7 +119,7 @@ typedef struct _Param {
 
 typedef struct _Methodes {
 	char* nom;
-	VarDeclP sesParam;
+	ParamP sesParam;
 	struct _Methodes *next;
 } Methodes, *MethodesP;
 

@@ -554,3 +554,22 @@ ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc
     result->nom = nom;
     return result;
 }
+
+ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes)
+{
+	ObjP result = malloc(sizeof(ObjP));
+	result->sesChamps = champs;
+	result->sesMethodes = methodes;
+	result->nom = nom;
+	return result;
+}
+
+MethodesP makeMethodes(char* nom, ParamP params, MethodesP nextMethodes)
+{
+	MethodesP result = malloc(sizeof(MethodesP));
+	result->nom = nom;
+	result->params;
+	result->next = nextMethodes;
+	return result;
+
+}
