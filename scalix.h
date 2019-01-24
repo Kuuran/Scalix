@@ -72,7 +72,7 @@ typedef struct _Tree {
 } Tree, *TreeP;
 
 typedef struct _TypeVar{
-enum type {CLASS, STRING , INTEGER, OBJECT};
+enum type {CLASSE, STRING , INTEGER, OBJECT};
 union {
 	char *S;
 	int I;
@@ -169,6 +169,9 @@ void Code(TreeP tree);
 ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
+VarDeclP makeChamps(char* name, TypeVar typeChamps, elmt element, VarDeclP next);
+VarDeclP makeMethodes(char* name, TypeVar typeMethodes, elmt element, VarDeclP next);
+
 
 VarDeclP listeSC = NIL(VarDecl);
 
