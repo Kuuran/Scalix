@@ -108,6 +108,7 @@ typedef union
 } YYSTYPE;
 
 typedef struct _Champs {
+	char* name;
 	TypeVar* champ;
 	struct _Champs *next;
 } Champs, *ChampsP;
@@ -180,7 +181,7 @@ void Code(TreeP tree);
 ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes);
 MethodesP makeMethodes(bool ovr, char* nom, ParamP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
-ChampsP makeChamps(TypeVar* type, ChampsP next);
+ChampsP makeChamps(char* name, TypeVar* type, ChampsP next);
 
 VarDeclP listeSC = NIL(VarDecl);
 
