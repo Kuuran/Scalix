@@ -171,7 +171,6 @@ int evalMain(TreeP tree, VarDeclP decls);
 void codeMain(TreeP tree);
 void Code(TreeP tree);
 
-
 ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
