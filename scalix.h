@@ -108,7 +108,12 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
+<<<<<<< HEAD
 /*typedef struct _Champs {
+=======
+typedef struct _Champs {
+	char* name;
+>>>>>>> a05ab6cc5399f1fff8f7e751e6e334b9099a604c
 	TypeVar* champ;
 	struct _Champs *next;
 } Champs, *ChampsP;
