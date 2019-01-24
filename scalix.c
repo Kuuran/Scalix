@@ -41,7 +41,7 @@ void setError(int code) {
     errorCode = code;
     if (code != NO_ERROR) { noEval = TRUE; }
 }
-
+//ekflzjfoe
 
 /* Appel:
  *   tp [-option]* programme.txt
