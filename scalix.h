@@ -62,7 +62,7 @@ typedef int bool;
 
 typedef struct _Class *ClassP;
 typedef struct _Obj *ObjP;
-
+enum { CHAMP , PARAM, RESULT, THIS, INCONNU }
 /* Definition d'un arbre de syntaxe abstraite */
 
 /* la structure d'un arbre (noeud ou feuille) */
@@ -91,6 +91,7 @@ typedef union {
 typedef struct _Decl
 { char *name;
     TypeVar value;
+    char* type;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
@@ -107,7 +108,7 @@ typedef union
     TreeP T;	/* AST */
 } YYSTYPE;
 
-typedef struct _Champs {
+/*typedef struct _Champs {
 	TypeVar* champ;
 	struct _Champs *next;
 } Champs, *ChampsP;
@@ -117,12 +118,12 @@ typedef struct _Param {
     TypeVar* value;
     struct _Param *next;
 } Param, *ParamP;
-
+*/
 typedef struct _Methodes {
 	bool ovr;
 	char* nom;
-	ParamP sesParam;
-	TypeVar typreRetour;
+	VarDeclP sesParam;
+	TypeVar typeRetour;
 	TreeP Bloc;
 	struct _Methodes *next;
 } Methodes, *MethodesP;
@@ -130,7 +131,8 @@ typedef struct _Methodes {
 typedef struct _Class
 {
 	char* nom;
-	ChampsP sesChamps;
+	VarDeclP sesParam;
+	VarDeclP sesChamps;
 	MethodesP sesMethodes;
 	struct _Class *sc;
 } Class, *ClassP;
@@ -138,8 +140,8 @@ typedef struct _Class
 typedef struct _Obj
 {
 	char* nom;
-	ChampsP sesChamps;
-	MethodesP sesMethodes
+	VarDeclP sesChamps;
+	MethodesP sesMethodes;
 } Obj, *ObjP;
 
 
@@ -177,9 +179,9 @@ int evalMain(TreeP tree, VarDeclP decls);
 void codeMain(TreeP tree);
 void Code(TreeP tree);
 
-ClassP makeClass(char* nom, ChampsP donneesMembres, MethodesP methodes, char* sc);
-ObjP makeObj(char* nom, ChampsP champs, MethodesP methodes);
-MethodesP makeMethodes(bool ovr, char* nom, ParamP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
+ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
+ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
+MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
 
 VarDeclP listeSC = NIL(VarDecl);
 
