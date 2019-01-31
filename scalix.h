@@ -72,7 +72,7 @@ typedef struct _Tree {
 } Tree, *TreeP;
 
 typedef struct _TypeVar{
-enum type {CLASSE, STRING , INTEGER, OBJECT};
+enum type {CLASSE, STRING , INTEGER, OBJECT} t;
 union {
 	char *S;
 	int I;
@@ -89,7 +89,7 @@ union {
 typedef struct _Decl
 { char *name;
     TypeVar value;
-    enum elmt { CHAMP , PARAM, RESULT, THIS, INCONNU };
+    enum elmt { CHAMP , PARAM, RESULT, THIS, INCONNU } element;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
@@ -166,6 +166,11 @@ int evalMain(TreeP tree, VarDeclP decls);
 void codeMain(TreeP tree);
 void Code(TreeP tree);
 
+ClassP rechercheClasse(char* nom);
+MethodesP rechercheMethode(char* nom);
+
+
+
 ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc);
@@ -174,5 +179,6 @@ VarDeclP makeParams(char* name, TypeVar typeParams, enum elmt element, VarDeclP 
 
 
 VarDeclP listeSC = NIL(VarDecl);
+MethodesP listMethodes = NIL(VarDecl);
 
 #endif //PROJET_SCALIX_H

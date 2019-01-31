@@ -540,10 +540,31 @@ void Code(TreeP tree)
 {
 
 }
-//todo methode recherche env classe
+
+ClassP rechercheClasse(char* nom){
+    VarDeclP tmp = listeSC;
+    while(tmp != NIL(VarDecl)){
+        if(tmp->value.t == CLASS && tmp->value.u.Classe->nom == nom){
+            return tmp->value.u.Classe;
+        }
+        tmp = tmp->next;
+    }
+    return NIL(Class);
+}
+
+MethodesP rechercheMethode(char* nom){
+    MethodesP tmp = listMethodes;
+    while(tmp != NIL(Methodes)){
+        if(tmp->nom == nom){
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+    return NIL(Methodes);
+}
 
 
-ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, MethodesP constructeur, MethodesP methodes, char* sc){ //todo liste de params optionnels qui doivent etre les memes que ceux su constructeur (1e methode de sesmethodes)
+ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, MethodesP constructeur, MethodesP methodes, char* sc){
 
     ClassP result = malloc(sizeof(ClassP));
 
@@ -576,10 +597,38 @@ ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, Metho
             printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
             exit(EXIT_FAILURE);
         }
-        MethodesP tmp1 = lparamConst, tmp2 = constructeur->sesParam;
-        while(tmp1 != NIL(Methodes) && tmp2 != NIL(Methodes)){
-            //todo la ya des trucs a finir
+        VarDeclP tmp1 = lparamConst, tmp2 = constructeur->sesParam;
+        while(tmp1 != NIL(VarDecl) && tmp2 != NIL(VarDecl)){
+            if(tmp1->value.t == tmp2->value.t){
+                switch (tmp1->value.t){
+                    CLASSE :
+                        if(tmp1->value.u.Classe->nom != tmp2->value.u.Classe->nom){
+                            printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
+                            exit(EXIT_FAILURE);
+                        }
+                        break;
+                    OBJECT :
+                        if(tmp1->value.u.Object->nom != tmp2->value.u.Object->nom){
+                            printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
+                            exit(EXIT_FAILURE);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            else{
+                printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
+                exit(EXIT_FAILURE);
+            }
+            tmp1 = tmp1->next;
+            tmp2 = tmp2->next;
         }
+        if(tmp1 != NIL(VarDecl) || tmp2 != NIL(VarDecl)){
+            printf("Erreur : les arguments passes en parametre de la classe %s sont errones.\n", nom);
+            exit(EXIT_FAILURE);
+        }
+
     }
 
     result->sesChamps = donneesMembres;
@@ -613,6 +662,8 @@ ObjP makeObj(char* nom, VarDeclP champs, MethodesP constructeur, MethodesP metho
 	return result;
 }
 
+//todo remplacement d'un truc mais on sait plus ce que c'est mais c'est pas grave Philippe s'en souviendra en lisant ce todo (le typevar est remplacé par un string)
+//todo gerer exit classe existe pas
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
