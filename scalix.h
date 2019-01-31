@@ -179,6 +179,6 @@ VarDeclP makeParams(char* name, TypeVar typeParams, enum elmt element, VarDeclP 
 
 
 VarDeclP listeSC = NIL(VarDecl);
-MethodesP listMethodes = NIL(VarDecl);
+MethodesP listMethodes = NIL(Methodes);
 
 #endif //PROJET_SCALIX_H
