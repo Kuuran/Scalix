@@ -42,14 +42,18 @@ typedef int bool;
 #define GE 	13
 #define LIST	14
 #define DECL	15
-#define Enew	16
-#define Ereturn	17
-#define Estrg	18
-#define SELEC   19
-#define Ebrac   20
-#define Eenvoi  21
-#define Ebloc   22
-#define Ecoma   23
+#define Eclass	16
+#define Eext	17
+#define Enew	20
+#define Edef	22
+#define Ereturn	23
+#define Ecol	26
+#define Estrg	27
+#define SELEC   28
+#define Ebrac   29
+#define Eenvoi  30
+#define Ebloc   31
+#define Ecoma   32
 
 typedef struct _Class *ClassP;
 typedef struct _Obj *ObjP;
@@ -68,7 +72,7 @@ typedef struct _Tree {
 } Tree, *TreeP;
 
 typedef struct _TypeVar{
-enum type {CLASSE, STRING , INTEGER, OBJECT};
+enum type {CLASSE, STRING , INTEGER, OBJECT} t;
 union {
 	char *S;
 	int I;
@@ -85,8 +89,7 @@ union {
 typedef struct _Decl
 { char *name;
     TypeVar value;
-    enum elmt { CHAMP , PARAM, RESULT, THIS, INCONNU };
-    bool var;
+    enum elmt { CHAMP , PARAM, RESULT, THIS, INCONNU } element;
     struct _Decl *next;
 } VarDecl, *VarDeclP;
 
@@ -163,15 +166,21 @@ int evalMain(TreeP tree, VarDeclP decls);
 void codeMain(TreeP tree);
 void Code(TreeP tree);
 
+ClassP rechercheClasse(char* nom);
+MethodesP rechercheMethode(char* nomClasse, char* nomMeth);
+VarDeclP rechercheChamp(char* nomClasse, char* nomChamp);
+
+
+
+
 ClassP makeClass(char* nom,VarDeclP lparamConst, VarDeclP donneesMembres,MethodesP constructeur, MethodesP methodes, char* sc);
 ObjP makeObj(char* nom, VarDeclP champs,MethodesP constructeur, MethodesP methodes);
-MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, TreeP bloc);//To Do: modifie .c
-VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var);//To Do: modifie .c
-VarDeclP makeList(VarDeclP element, VarDeclP next); //To Do: modifie .c
-MethodesP makeListMeth(MethodesP element, MethodesP next); //To Do: modifie .c
+MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, TreeP bloc);//ToDo: modifie .c
+VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var);//ToDo: modifie .c
+VarDeclP makeList(VarDeclP element, VarDeclP next); //ToDo: modifie .c
+MethodesP makeListMeth(MethodesP element, MethodesP next); //ToDo: modifie .c
 
 
 VarDeclP listeSC = NIL(VarDecl);
 
 #endif //PROJET_SCALIX_H
-
