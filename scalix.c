@@ -552,15 +552,40 @@ ClassP rechercheClasse(char* nom){
     return NIL(Class);
 }
 
-MethodesP rechercheMethode(char* nom){
-    MethodesP tmp = listMethodes;
+MethodesP rechercheMethode(char* nomC, char* nomM){
+    ClassP cp = rechercheClasse(nomC);
+
+    if(cp == NIL(Class)){
+        printf("Erreur : La classe %s n'existe pas.\n", nomC);
+        exit(EXIT_FAILURE);
+    }
+
+    MethodesP tmp = cp->sesMethodes;
     while(tmp != NIL(Methodes)){
-        if(tmp->nom == nom){
+        if(tmp->nom == nomM){
             return tmp;
         }
         tmp = tmp->next;
     }
     return NIL(Methodes);
+}
+
+VarDeclP rechercheChamps(char* nomC, char* nomChamp){
+    ClassP cp = rechercheClasse(nomC);
+
+    if(cp == NIL(Class)){
+        printf("Erreur : La classe %s n'existe pas.\n", nomC);
+        exit(EXIT_FAILURE);
+    }
+
+    VarDeclP tmp = cp->sesChamps;
+    while(tmp != NIL(Methodes)){
+        if(tmp->name == nomChamp){
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+    return NIL(VarDecl);
 }
 
 

@@ -167,7 +167,9 @@ void codeMain(TreeP tree);
 void Code(TreeP tree);
 
 ClassP rechercheClasse(char* nom);
-MethodesP rechercheMethode(char* nom);
+MethodesP rechercheMethode(char* nomClasse, char* nomMeth);
+VarDeclP rechercheChamp(char* nomClasse, char* nomChamp);
+
 
 
 
@@ -179,6 +181,5 @@ VarDeclP makeParams(char* name, TypeVar typeParams, enum elmt element, VarDeclP 
 
 
 VarDeclP listeSC = NIL(VarDecl);
-MethodesP listMethodes = NIL(Methodes);
 
 #endif //PROJET_SCALIX_H
