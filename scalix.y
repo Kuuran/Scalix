@@ -63,11 +63,11 @@ programme	: listOptDef bloc
 ;
 
 listOptDef	: listDef  { $$ = $1; }
-| { $$ = NIL(Tree); }
+| { $$ = NIL(Class); }
 ;
 
 listDef	:Def { $$ = $1;/*$$ = makeTree(LIST, 1, $1);*/ }
-	| Def listDef { $$ = makeTree(LIST, 2, $1, $2); }
+	| Def listDef { $$ = $1, $2; }
 	;
 	
 Def	:defClasse { $$ = $1; }
@@ -75,81 +75,66 @@ Def	:defClasse { $$ = $1; }
 	;
 
 defClasse : CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
-	 { $$ = makeClass($2, $4,$6, $9,$10,$11); }
+	 { $$ = makeClass($2, $4, $9,$10,$11, $6); }
 	 ;
 
 listOptParam	: listParam { $$ = $1; }
-		|{ $$ = NIL(Champs); }
+		|{ $$ = NIL(VarDecl); }
 		;
 
 listParam	:param { $$ = $1; }
-		|param COMA listParam { $$ = makeTree(Ecoma, 2, $1, $3); }  //JSP
+		|param COMA listParam { $$ = makeList($1, $3); } 
 		;
 
-param	:ID COL IDCLASS { $$ = makeParam(false, $1, $3); }
-	| VAR ID COL IDCLASS { $$ = makeParam(true, $2, $4); }
+param	:ID COL IDCLASS { $$ = makeVarDecl($1, $3,PARAM, FALSE); }
+	| VAR ID COL IDCLASS { $$ = makeVarDecl($2, $4,PARAM, TRUE); }
 	;
 	
-heritOpt	:EXT ID { $$ = makeTree(Eext, 1, makeLeafStr(IDVAR,$2)); }
-		|{ $$ = NIL(Tree); }
+heritOpt	:EXT ID { $$ = $2; }
+		|{ $$ = ""; }
 		;
 
 defConst	:DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
-{ $$ = makeTree(Edef, 4,makeLeafStr(IDVAR,$2), $4, $6, $9); }
+{ $$ = makeMethodes(FALSE, $2,$4, $2, $9); }//superClasseOpt
 ;
 
 
-superClasseOpt	: IDCLASS BRACO listEOpt BRACC { $$ = makeTree(Eclass, 2,makeLeafStr(IDVAR,$1), $3); }
-		|{ $$ = NIL(Tree); }
+superClasseOpt	: IDCLASS BRACO listEOpt BRACC { $$ = makeMethodes(FALSE, $1, $3,$1, NIL(Tree)); }
+		|{ $$ = NIL(Methodes); }
 		;
 
 listOptChamps	: listChamps { $$ = $1; }
-|{ $$ = NIL(Tree); }
+|{ $$ = NIL(VarDecl); }
 ;
 listChamps	: champ { $$ = $1; }
-		| champ listChamps { $$ = makeTree(LIST, 2, $1, $2); }
+		| champ listChamps { $$ = makeList($1, $2); }
 		;
 
-champ	: VAR ID COL IDCLASS SCOL { $$ = makeParam(true, $2, $4); } //on sait pas
+champ	: VAR ID COL IDCLASS SCOL { $$ = makeVarDecl($2, $4, CHAMP,TRUE); } //on sait pas
 ;
 
 listOptMeth	: listMeth { $$ = $1; }
-	|{ $$ = NIL(Methodes); }
+	|{ $$ = NIL(MethodesP); }
 	;
 
 listMeth	: methode { $$ = $1; }
-	| methode listMeth { $$ = makeTree(LIST, 2, $1, $2); }
+	| methode listMeth { $$ = makeListMeth($1, $2); }
 	;
 		 
 /*methode: overrideOpt DEF typeMethode { $$ = makeTree(Eovr, 2, $1, $3); } 
 ;*/
 
-overrideOpt	:OVR { $$ = true; }
-		| { $$ = false; }
+overrideOpt	:OVR { $$ = TRUE; }
+		| { $$ = FALSE; }
 ;
 
-methode	: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT E { $$ = makeMehodes($1, $3,$5, $8,  $10); }
-		| overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt IS bloc { $$ = makeTree(Edef, 4,makeLeafStr(IDVAR,$1), $3, $5, $7); }
+methode	: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT E { $$ = makeMethodes($1, $3,$5, $8,  $10); }
+		| overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt IS bloc { $$ = makeMethodes($1, $3, $5, $7, $9); }
 		;
 
-nomClasseOpt 	: COL IDCLASS { $$ = makeTree(Ecol, 1,makeLeafStr(IDVAR,$2)); }
-		|{ $$ = NIL(Tree); }
+nomClasseOpt 	: COL IDCLASS { $$ = $2; }
+		|{ $$ = ""; }
 		;
-
-/*case GT:    printf("<"); break;
-        case GE:    printf(">="); break;
-        case LT:    printf("<"); break;
-        case LE:    printf("<="); break;
-        case Eadd:  printf("+"); break;
-
-*/
-
-
-
-
-
-
-
 
 E	:E RELOP E { $$ = makeTree($2, 2, $1, $3); }
 	|E ADD E { $$ = makeTree(Eadd, 2, $1, $3); }
@@ -216,11 +201,11 @@ listDecl	: decl listDecl { $$ = makeTree(LIST, 2,$1,$2); }
 | decl { $$ = $1; }
 ;
 
-decl	: ID COL IDCLASS expOpt SCOL { $$ = makeTree(DECL, 2,makeLeafStr(IDVAR,$1),makeLeafStr(IDVAR,$3)); }
+decl	: ID COL IDCLASS expOpt SCOL { $$ = makeVarDecl($1, $3, CHAMP, FALSE); }
 ; 
 
 expOpt	: AFFECT E { $$ = $2; }
-| { $$ = NIL(Tree); }
+| { $$ = NIL(VarDecl); } // JSP
 ;
 
 aff 	: selection AFFECT E SCOL { $$ = makeTree(DECL, 2, $1, $3); }
@@ -230,5 +215,5 @@ aff 	: selection AFFECT E SCOL { $$ = makeTree(DECL, 2, $1, $3); }
 defObj	: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC { $$ = makeObj($2, $5,$6,$7); }
 ;
 
-defConstObj	: DEF IDCLASS IS CBRACO listOptInst CBRACC { $$ = makeMethodes($2, 2,makeLeafStr(IDVAR,$2),$5); }
+defConstObj	: DEF IDCLASS IS CBRACO listOptInst CBRACC { $$ = makeMethodes(FALSE, $2,NIL(VarDecl),"",$5 ); }
 ;
