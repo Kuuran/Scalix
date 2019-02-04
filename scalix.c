@@ -758,6 +758,8 @@ VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var)
 		res->value.t = CLASSE;
 	else if(obj != NIL(Obj))
 		res->value.t = OBJECT;
+	else
+		exit(EXIT_FAILURE);
 
 	return res;
 }
