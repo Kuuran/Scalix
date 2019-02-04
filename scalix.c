@@ -686,11 +686,11 @@ ObjP makeObj(char* nom, VarDeclP champs, MethodesP constructeur, MethodesP metho
 MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, TreeP bloc)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
-	ClassP classP;
+	ClassP classP = rechercheClasse(typeRetour);
 	result->ovr = ovr;
 	result->nom = nom;
 	result->sesParam = params;
-	classP = rechercheClasse(typeRetour);
+	ObjetP obj = rechercheObjet(typeRetour);
 
 	if(typeRetour == "Integer")
 		result->typeRetour.t = INTEGER;
@@ -698,6 +698,8 @@ MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, T
 		result->typeRetour.t = STRING;
 	else if(classP != NIL(Class))
 		result->typeRetour.t = CLASSE;
+	else if(obj != NIL(Objet))
+		result->typeRetour.t = OBJET;
 	else
 		exit(EXIT_FAILURE);
 
@@ -709,8 +711,19 @@ MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, T
 VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var)
 {
 	VarDeclP res = malloc(sizeof(VarDeclP));
+	ClassP classP = rechercheClasse(type);
+	ObjetP obj = rechercheObjet(type4);
+
 	res->name = name;
 	res->element = element;
+	if(type == "Integer")
+		res->value.t = INTEGER;
+	else if(type == "String")
+		res->value.t = STRING;
+	else if(classP != NIL(Class))
+		res->value.t = CLASSE;
+	else if(obj != NIL(Objet))
+		res->value.t = OBJET;
 
 	return res;
 }
