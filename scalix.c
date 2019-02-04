@@ -10,12 +10,6 @@
 extern int yyparse();
 extern int yylineno;
 
-int evalMain(TreeP tree, VarDeclP decls);
-int eval(TreeP tree, VarDeclP decls);
-
-void printAST(TreeP tree, TreeP main);
-
-
 /* Niveau de 'verbosite'.
  * Par defaut, n'imprime que le resultat et les messages d'erreur
  */
@@ -117,7 +111,7 @@ int main(int argc, char **argv) {
  */
 TreeP makeNode(int nbChildren, short op) {
     TreeP tree = NEW(1, Tree);
-    tree->op = op; tree->nbChildren = nbChildren;
+    tree->op = op; tree->nbChildren = (short) nbChildren;
     tree->u.children = nbChildren > 0 ? NEW(nbChildren, TreeP) : NIL(TreeP);
     return(tree);
 }
@@ -570,7 +564,7 @@ MethodesP rechercheMethode(char* nomC, char* nomM){
     return NIL(Methodes);
 }
 
-VarDeclP rechercheChamps(char* nomC, char* nomChamp){
+VarDeclP rechercheChamps(char* nomC, const char* nomChamp){
     ClassP cp = rechercheClasse(nomC);
 
     if(cp == NIL(Class)){
@@ -579,7 +573,7 @@ VarDeclP rechercheChamps(char* nomC, char* nomChamp){
     }
 
     VarDeclP tmp = cp->sesChamps;
-    while(tmp != NIL(Methodes)){
+    while(tmp != NIL(VarDecl)){
         if(tmp->name == nomChamp){
             return tmp;
         }
@@ -702,7 +696,7 @@ MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, T
 		result->typeRetour.t = INTEGER;
 	else if(typeRetour == "String")
 		result->typeRetour.t = STRING;
-	else if(classP != NIL(ClassP))
+	else if(classP != NIL(Class))
 		result->typeRetour.t = CLASSE;
 	else
 		exit(EXIT_FAILURE);

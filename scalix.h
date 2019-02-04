@@ -181,6 +181,6 @@ VarDeclP makeList(VarDeclP element, VarDeclP next); //ToDo: modifie .c
 MethodesP makeListMeth(MethodesP element, MethodesP next); //ToDo: modifie .c
 
 
-VarDeclP listeSC = NIL(VarDecl);
+VarDeclP listeSC;// = NIL(VarDecl);
 
 #endif //PROJET_SCALIX_H
