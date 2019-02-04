@@ -689,14 +689,46 @@ ObjP makeObj(char* nom, VarDeclP champs, MethodesP constructeur, MethodesP metho
 
 //todo remplacement d'un truc mais on sait plus ce que c'est mais c'est pas grave Philippe s'en souviendra en lisant ce todo (le typevar est remplacé par un string)
 //todo gerer exit classe existe pas
-MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, MethodesP nextMethodes, char* typeRetour, TreeP bloc)
+MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, TreeP bloc)
 {
 	MethodesP result = malloc(sizeof(MethodesP));
+	ClassP classP;
 	result->ovr = ovr;
 	result->nom = nom;
 	result->sesParam = params;
-	result->next = nextMethodes;
+	classP = rechercheClasse(typeRetour);
+
+	if(typeRetour == "Integer")
+		result->typeRetour.t = INTEGER;
+	else if(typeRetour == "String")
+		result->typeRetour.t = STRING;
+	else if(classP != NIL(ClassP))
+		result->typeRetour.t = CLASSE;
+	else
+		exit(EXIT_FAILURE);
+
 	//todo type de Retour à faire avec l'env listeClasse + Integer + String
 	return result;
 
+}
+
+VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var)
+{
+	VarDeclP res = malloc(sizeof(VarDeclP));
+	res->name = name;
+	res->element = element;
+
+	return res;
+}
+
+VarDeclP makeList(VarDeclP element, VarDeclP next)
+{
+	element->next = next;
+	return element;
+}
+
+MethodesP makeListMeth(MethodesP element, MethodesP next)
+{
+	element->next = next;
+	return element;
 }
