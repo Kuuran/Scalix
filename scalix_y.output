@@ -1,0 +1,2215 @@
+Non-terminaux inutiles dans la grammaire
+
+   typeMethode
+
+
+Terminaux inutilisés dans la grammaire
+
+   AND
+
+
+Grammaire
+
+    0 $accept: programme $end
+
+    1 programme: listOptDef bloc
+
+    2 listOptDef: listDef
+    3           | %empty
+
+    4 listDef: Def
+    5        | Def listDef
+
+    6 Def: defClasse
+    7    | defObj
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    9 listOptParam: listParam
+   10             | %empty
+
+   11 listParam: param
+   12          | param COMA listParam
+
+   13 param: ID COL IDCLASS
+   14      | VAR ID COL IDCLASS
+
+   15 heritOpt: EXT ID
+   16         | %empty
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
+
+   18 superClasseOpt: IDCLASS BRACO listEOpt BRACC
+   19               | %empty
+
+   20 listOptChamps: listChamps
+   21              | %empty
+
+   22 listChamps: champ
+   23           | champ listChamps
+
+   24 champ: VAR ID COL IDCLASS SCOL
+
+   25 listOptMeth: listMeth
+   26            | %empty
+
+   27 listMeth: methode
+   28         | methode listMeth
+
+   29 overrideOpt: OVR
+   30            | %empty
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt IS bloc
+
+   33 nomClasseOpt: COL IDCLASS
+   34             | %empty
+
+   35 E: E RELOP E
+   36  | E ADD E
+   37  | E SUB E
+   38  | E MUL E
+   39  | E DIV E
+   40  | instanciation
+   41  | ELight
+   42  | BRACO IDCLASS E BRACC
+   43  | ADD E
+   44  | SUB E
+
+   45 appel: envoi
+   46      | selection
+
+   47 envoi: ELight POINT ID BRACO listEOpt BRACC
+   48      | IDCLASS POINT ID BRACO listEOpt BRACC
+
+   49 selection: ELight POINT ID
+
+   50 listEOpt: listE
+   51         | %empty
+
+   52 listE: E
+   53      | E COMA listE
+
+   54 ELight: ID
+   55       | CST
+   56       | appel
+   57       | STRG
+   58       | BRACO E BRACC
+
+   59 instanciation: NEW IDCLASS BRACO listEOpt BRACC
+
+   60 inst: E SCOL
+   61     | bloc
+   62     | RETURN SCOL
+   63     | aff
+   64     | IF E THEN inst ELSE inst
+
+   65 bloc: CBRACO listOptInst CBRACC
+   66     | CBRACO listDecl IS listInst CBRACC
+
+   67 listOptInst: listInst
+   68            | %empty
+
+   69 listInst: inst listInst
+   70         | inst
+
+   71 listDecl: decl listDecl
+   72         | decl
+
+   73 decl: ID COL IDCLASS expOpt SCOL
+
+   74 expOpt: AFFECT E
+   75       | %empty
+
+   76 aff: selection AFFECT E SCOL
+   77    | ID AFFECT E SCOL
+
+   78 defObj: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
+
+   79 defConstObj: DEF IDCLASS IS CBRACO listOptInst CBRACC
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+error (256)
+IF (258) 64
+THEN (259) 64
+ELSE (260) 64
+ADD (261) 36 43
+SUB (262) 37 44
+MUL (263) 38
+DIV (264) 39
+AFFECT (265) 31 74 76 77
+SCOL (266) 24 60 62 73 76 77
+AND (267)
+BRACO (268) 8 17 18 31 32 42 47 48 58 59
+BRACC (269) 8 17 18 31 32 42 47 48 58 59
+COMA (270) 12 53
+CBRACO (271) 8 17 65 66 78 79
+CBRACC (272) 8 17 65 66 78 79
+CLASS (273) 8
+EXT (274) 15
+IS (275) 8 17 32 66 78 79
+OBJ (276) 78
+NEW (277) 59
+OVR (278) 29
+DEF (279) 17 31 32 79
+STRG (280) 57
+RETURN (281) 62
+POINT (282) 47 48 49
+VAR (283) 14 24
+COL (284) 13 14 24 31 33 73
+ID (285) 13 14 15 24 31 32 47 48 49 54 73 77
+IDCLASS (286) 8 13 14 17 18 24 31 33 42 48 59 73 78 79
+CST (287) 55
+RELOP (288) 35
+unary (289)
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (35)
+    à gauche: 0
+programme (36)
+    à gauche: 1, à droite: 0
+listOptDef (37)
+    à gauche: 2 3, à droite: 1
+listDef (38)
+    à gauche: 4 5, à droite: 2 5
+Def (39)
+    à gauche: 6 7, à droite: 4 5
+defClasse (40)
+    à gauche: 8, à droite: 6
+listOptParam (41)
+    à gauche: 9 10, à droite: 8 17 31 32
+listParam (42)
+    à gauche: 11 12, à droite: 9 12
+param (43)
+    à gauche: 13 14, à droite: 11 12
+heritOpt (44)
+    à gauche: 15 16, à droite: 8
+defConst (45)
+    à gauche: 17, à droite: 8
+superClasseOpt (46)
+    à gauche: 18 19, à droite: 17
+listOptChamps (47)
+    à gauche: 20 21, à droite: 8 78
+listChamps (48)
+    à gauche: 22 23, à droite: 20 23
+champ (49)
+    à gauche: 24, à droite: 22 23
+listOptMeth (50)
+    à gauche: 25 26, à droite: 8 78
+listMeth (51)
+    à gauche: 27 28, à droite: 25 28
+overrideOpt (52)
+    à gauche: 29 30, à droite: 31 32
+methode (53)
+    à gauche: 31 32, à droite: 27 28
+nomClasseOpt (54)
+    à gauche: 33 34, à droite: 32
+E (55)
+    à gauche: 35 36 37 38 39 40 41 42 43 44, à droite: 31 35 36 37
+    38 39 42 43 44 52 53 58 60 64 74 76 77
+appel (56)
+    à gauche: 45 46, à droite: 56
+envoi (57)
+    à gauche: 47 48, à droite: 45
+selection (58)
+    à gauche: 49, à droite: 46 76
+listEOpt (59)
+    à gauche: 50 51, à droite: 18 47 48 59
+listE (60)
+    à gauche: 52 53, à droite: 50 53
+ELight (61)
+    à gauche: 54 55 56 57 58, à droite: 41 47 49
+instanciation (62)
+    à gauche: 59, à droite: 40
+inst (63)
+    à gauche: 60 61 62 63 64, à droite: 64 69 70
+bloc (64)
+    à gauche: 65 66, à droite: 1 32 61
+listOptInst (65)
+    à gauche: 67 68, à droite: 17 65 79
+listInst (66)
+    à gauche: 69 70, à droite: 66 67 69
+listDecl (67)
+    à gauche: 71 72, à droite: 66 71
+decl (68)
+    à gauche: 73, à droite: 71 72
+expOpt (69)
+    à gauche: 74 75, à droite: 73
+aff (70)
+    à gauche: 76 77, à droite: 63
+defObj (71)
+    à gauche: 78, à droite: 7
+defConstObj (72)
+    à gauche: 79, à droite: 78
+
+
+État 0
+
+    0 $accept: . programme $end
+
+    CLASS  décalage et aller à l'état 1
+    OBJ    décalage et aller à l'état 2
+
+    $défaut  réduction par utilisation de la règle 3 (listOptDef)
+
+    programme   aller à l'état 3
+    listOptDef  aller à l'état 4
+    listDef     aller à l'état 5
+    Def         aller à l'état 6
+    defClasse   aller à l'état 7
+    defObj      aller à l'état 8
+
+
+État 1
+
+    8 defClasse: CLASS . IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    IDCLASS  décalage et aller à l'état 9
+
+
+État 2
+
+   78 defObj: OBJ . IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
+
+    IDCLASS  décalage et aller à l'état 10
+
+
+État 3
+
+    0 $accept: programme . $end
+
+    $end  décalage et aller à l'état 11
+
+
+État 4
+
+    1 programme: listOptDef . bloc
+
+    CBRACO  décalage et aller à l'état 12
+
+    bloc  aller à l'état 13
+
+
+État 5
+
+    2 listOptDef: listDef .
+
+    $défaut  réduction par utilisation de la règle 2 (listOptDef)
+
+
+État 6
+
+    4 listDef: Def .
+    5        | Def . listDef
+
+    CLASS  décalage et aller à l'état 1
+    OBJ    décalage et aller à l'état 2
+
+    $défaut  réduction par utilisation de la règle 4 (listDef)
+
+    listDef    aller à l'état 14
+    Def        aller à l'état 6
+    defClasse  aller à l'état 7
+    defObj     aller à l'état 8
+
+
+État 7
+
+    6 Def: defClasse .
+
+    $défaut  réduction par utilisation de la règle 6 (Def)
+
+
+État 8
+
+    7 Def: defObj .
+
+    $défaut  réduction par utilisation de la règle 7 (Def)
+
+
+État 9
+
+    8 defClasse: CLASS IDCLASS . BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    BRACO  décalage et aller à l'état 15
+
+
+État 10
+
+   78 defObj: OBJ IDCLASS . IS CBRACO listOptChamps defConstObj listOptMeth CBRACC
+
+    IS  décalage et aller à l'état 16
+
+
+État 11
+
+    0 $accept: programme $end .
+
+    $défaut  accepter
+
+
+État 12
+
+   65 bloc: CBRACO . listOptInst CBRACC
+   66     | CBRACO . listDecl IS listInst CBRACC
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 24
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 68 (listOptInst)
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 33
+    bloc           aller à l'état 34
+    listOptInst    aller à l'état 35
+    listInst       aller à l'état 36
+    listDecl       aller à l'état 37
+    decl           aller à l'état 38
+    aff            aller à l'état 39
+
+
+État 13
+
+    1 programme: listOptDef bloc .
+
+    $défaut  réduction par utilisation de la règle 1 (programme)
+
+
+État 14
+
+    5 listDef: Def listDef .
+
+    $défaut  réduction par utilisation de la règle 5 (listDef)
+
+
+État 15
+
+    8 defClasse: CLASS IDCLASS BRACO . listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    VAR  décalage et aller à l'état 40
+    ID   décalage et aller à l'état 41
+
+    $défaut  réduction par utilisation de la règle 10 (listOptParam)
+
+    listOptParam  aller à l'état 42
+    listParam     aller à l'état 43
+    param         aller à l'état 44
+
+
+État 16
+
+   78 defObj: OBJ IDCLASS IS . CBRACO listOptChamps defConstObj listOptMeth CBRACC
+
+    CBRACO  décalage et aller à l'état 45
+
+
+État 17
+
+   64 inst: IF . E THEN inst ELSE inst
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 47
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 18
+
+   43 E: ADD . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 49
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 19
+
+   44 E: SUB . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 50
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 20
+
+   42 E: BRACO . IDCLASS E BRACC
+   58 ELight: BRACO . E BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 51
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 52
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 21
+
+   59 instanciation: NEW . IDCLASS BRACO listEOpt BRACC
+
+    IDCLASS  décalage et aller à l'état 53
+
+
+État 22
+
+   57 ELight: STRG .
+
+    $défaut  réduction par utilisation de la règle 57 (ELight)
+
+
+État 23
+
+   62 inst: RETURN . SCOL
+
+    SCOL  décalage et aller à l'état 54
+
+
+État 24
+
+   54 ELight: ID .
+   73 decl: ID . COL IDCLASS expOpt SCOL
+   77 aff: ID . AFFECT E SCOL
+
+    AFFECT  décalage et aller à l'état 55
+    COL     décalage et aller à l'état 56
+
+    $défaut  réduction par utilisation de la règle 54 (ELight)
+
+
+État 25
+
+   48 envoi: IDCLASS . POINT ID BRACO listEOpt BRACC
+
+    POINT  décalage et aller à l'état 57
+
+
+État 26
+
+   55 ELight: CST .
+
+    $défaut  réduction par utilisation de la règle 55 (ELight)
+
+
+État 27
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   60 inst: E . SCOL
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    SCOL   décalage et aller à l'état 62
+    RELOP  décalage et aller à l'état 63
+
+
+État 28
+
+   56 ELight: appel .
+
+    $défaut  réduction par utilisation de la règle 56 (ELight)
+
+
+État 29
+
+   45 appel: envoi .
+
+    $défaut  réduction par utilisation de la règle 45 (appel)
+
+
+État 30
+
+   46 appel: selection .
+   76 aff: selection . AFFECT E SCOL
+
+    AFFECT  décalage et aller à l'état 64
+
+    $défaut  réduction par utilisation de la règle 46 (appel)
+
+
+État 31
+
+   41 E: ELight .
+   47 envoi: ELight . POINT ID BRACO listEOpt BRACC
+   49 selection: ELight . POINT ID
+
+    POINT  décalage et aller à l'état 65
+
+    $défaut  réduction par utilisation de la règle 41 (E)
+
+
+État 32
+
+   40 E: instanciation .
+
+    $défaut  réduction par utilisation de la règle 40 (E)
+
+
+État 33
+
+   69 listInst: inst . listInst
+   70         | inst .
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 70 (listInst)
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 33
+    bloc           aller à l'état 34
+    listInst       aller à l'état 67
+    aff            aller à l'état 39
+
+
+État 34
+
+   61 inst: bloc .
+
+    $défaut  réduction par utilisation de la règle 61 (inst)
+
+
+État 35
+
+   65 bloc: CBRACO listOptInst . CBRACC
+
+    CBRACC  décalage et aller à l'état 68
+
+
+État 36
+
+   67 listOptInst: listInst .
+
+    $défaut  réduction par utilisation de la règle 67 (listOptInst)
+
+
+État 37
+
+   66 bloc: CBRACO listDecl . IS listInst CBRACC
+
+    IS  décalage et aller à l'état 69
+
+
+État 38
+
+   71 listDecl: decl . listDecl
+   72         | decl .
+
+    ID  décalage et aller à l'état 70
+
+    $défaut  réduction par utilisation de la règle 72 (listDecl)
+
+    listDecl  aller à l'état 71
+    decl      aller à l'état 38
+
+
+État 39
+
+   63 inst: aff .
+
+    $défaut  réduction par utilisation de la règle 63 (inst)
+
+
+État 40
+
+   14 param: VAR . ID COL IDCLASS
+
+    ID  décalage et aller à l'état 72
+
+
+État 41
+
+   13 param: ID . COL IDCLASS
+
+    COL  décalage et aller à l'état 73
+
+
+État 42
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam . BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    BRACC  décalage et aller à l'état 74
+
+
+État 43
+
+    9 listOptParam: listParam .
+
+    $défaut  réduction par utilisation de la règle 9 (listOptParam)
+
+
+État 44
+
+   11 listParam: param .
+   12          | param . COMA listParam
+
+    COMA  décalage et aller à l'état 75
+
+    $défaut  réduction par utilisation de la règle 11 (listParam)
+
+
+État 45
+
+   78 defObj: OBJ IDCLASS IS CBRACO . listOptChamps defConstObj listOptMeth CBRACC
+
+    VAR  décalage et aller à l'état 76
+
+    $défaut  réduction par utilisation de la règle 21 (listOptChamps)
+
+    listOptChamps  aller à l'état 77
+    listChamps     aller à l'état 78
+    champ          aller à l'état 79
+
+
+État 46
+
+   54 ELight: ID .
+
+    $défaut  réduction par utilisation de la règle 54 (ELight)
+
+
+État 47
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   64 inst: IF E . THEN inst ELSE inst
+
+    THEN   décalage et aller à l'état 80
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    RELOP  décalage et aller à l'état 63
+
+
+État 48
+
+   46 appel: selection .
+
+    $défaut  réduction par utilisation de la règle 46 (appel)
+
+
+État 49
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   43  | ADD E .
+
+    $défaut  réduction par utilisation de la règle 43 (E)
+
+
+État 50
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   44  | SUB E .
+
+    $défaut  réduction par utilisation de la règle 44 (E)
+
+
+État 51
+
+   42 E: BRACO IDCLASS . E BRACC
+   48 envoi: IDCLASS . POINT ID BRACO listEOpt BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    POINT    décalage et aller à l'état 57
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 81
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 52
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   58 ELight: BRACO E . BRACC
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    BRACC  décalage et aller à l'état 82
+    RELOP  décalage et aller à l'état 63
+
+
+État 53
+
+   59 instanciation: NEW IDCLASS . BRACO listEOpt BRACC
+
+    BRACO  décalage et aller à l'état 83
+
+
+État 54
+
+   62 inst: RETURN SCOL .
+
+    $défaut  réduction par utilisation de la règle 62 (inst)
+
+
+État 55
+
+   77 aff: ID AFFECT . E SCOL
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 84
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 56
+
+   73 decl: ID COL . IDCLASS expOpt SCOL
+
+    IDCLASS  décalage et aller à l'état 85
+
+
+État 57
+
+   48 envoi: IDCLASS POINT . ID BRACO listEOpt BRACC
+
+    ID  décalage et aller à l'état 86
+
+
+État 58
+
+   36 E: E ADD . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 87
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 59
+
+   37 E: E SUB . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 88
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 60
+
+   38 E: E MUL . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 89
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 61
+
+   39 E: E DIV . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 90
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 62
+
+   60 inst: E SCOL .
+
+    $défaut  réduction par utilisation de la règle 60 (inst)
+
+
+État 63
+
+   35 E: E RELOP . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 91
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 64
+
+   76 aff: selection AFFECT . E SCOL
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 92
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 65
+
+   47 envoi: ELight POINT . ID BRACO listEOpt BRACC
+   49 selection: ELight POINT . ID
+
+    ID  décalage et aller à l'état 93
+
+
+État 66
+
+   54 ELight: ID .
+   77 aff: ID . AFFECT E SCOL
+
+    AFFECT  décalage et aller à l'état 55
+
+    $défaut  réduction par utilisation de la règle 54 (ELight)
+
+
+État 67
+
+   69 listInst: inst listInst .
+
+    $défaut  réduction par utilisation de la règle 69 (listInst)
+
+
+État 68
+
+   65 bloc: CBRACO listOptInst CBRACC .
+
+    $défaut  réduction par utilisation de la règle 65 (bloc)
+
+
+État 69
+
+   66 bloc: CBRACO listDecl IS . listInst CBRACC
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 33
+    bloc           aller à l'état 34
+    listInst       aller à l'état 94
+    aff            aller à l'état 39
+
+
+État 70
+
+   73 decl: ID . COL IDCLASS expOpt SCOL
+
+    COL  décalage et aller à l'état 56
+
+
+État 71
+
+   71 listDecl: decl listDecl .
+
+    $défaut  réduction par utilisation de la règle 71 (listDecl)
+
+
+État 72
+
+   14 param: VAR ID . COL IDCLASS
+
+    COL  décalage et aller à l'état 95
+
+
+État 73
+
+   13 param: ID COL . IDCLASS
+
+    IDCLASS  décalage et aller à l'état 96
+
+
+État 74
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC . heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    EXT  décalage et aller à l'état 97
+
+    $défaut  réduction par utilisation de la règle 16 (heritOpt)
+
+    heritOpt  aller à l'état 98
+
+
+État 75
+
+   12 listParam: param COMA . listParam
+
+    VAR  décalage et aller à l'état 40
+    ID   décalage et aller à l'état 41
+
+    listParam  aller à l'état 99
+    param      aller à l'état 44
+
+
+État 76
+
+   24 champ: VAR . ID COL IDCLASS SCOL
+
+    ID  décalage et aller à l'état 100
+
+
+État 77
+
+   78 defObj: OBJ IDCLASS IS CBRACO listOptChamps . defConstObj listOptMeth CBRACC
+
+    DEF  décalage et aller à l'état 101
+
+    defConstObj  aller à l'état 102
+
+
+État 78
+
+   20 listOptChamps: listChamps .
+
+    $défaut  réduction par utilisation de la règle 20 (listOptChamps)
+
+
+État 79
+
+   22 listChamps: champ .
+   23           | champ . listChamps
+
+    VAR  décalage et aller à l'état 76
+
+    $défaut  réduction par utilisation de la règle 22 (listChamps)
+
+    listChamps  aller à l'état 103
+    champ       aller à l'état 79
+
+
+État 80
+
+   64 inst: IF E THEN . inst ELSE inst
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 104
+    bloc           aller à l'état 34
+    aff            aller à l'état 39
+
+
+État 81
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   42  | BRACO IDCLASS E . BRACC
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    BRACC  décalage et aller à l'état 105
+    RELOP  décalage et aller à l'état 63
+
+
+État 82
+
+   58 ELight: BRACO E BRACC .
+
+    $défaut  réduction par utilisation de la règle 58 (ELight)
+
+
+État 83
+
+   59 instanciation: NEW IDCLASS BRACO . listEOpt BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 51 (listEOpt)
+
+    E              aller à l'état 106
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    listEOpt       aller à l'état 107
+    listE          aller à l'état 108
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 84
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   77 aff: ID AFFECT E . SCOL
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    SCOL   décalage et aller à l'état 109
+    RELOP  décalage et aller à l'état 63
+
+
+État 85
+
+   73 decl: ID COL IDCLASS . expOpt SCOL
+
+    AFFECT  décalage et aller à l'état 110
+
+    $défaut  réduction par utilisation de la règle 75 (expOpt)
+
+    expOpt  aller à l'état 111
+
+
+État 86
+
+   48 envoi: IDCLASS POINT ID . BRACO listEOpt BRACC
+
+    BRACO  décalage et aller à l'état 112
+
+
+État 87
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   36  | E ADD E .
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+
+    MUL  décalage et aller à l'état 60
+    DIV  décalage et aller à l'état 61
+
+    $défaut  réduction par utilisation de la règle 36 (E)
+
+
+État 88
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   37  | E SUB E .
+   38  | E . MUL E
+   39  | E . DIV E
+
+    MUL  décalage et aller à l'état 60
+    DIV  décalage et aller à l'état 61
+
+    $défaut  réduction par utilisation de la règle 37 (E)
+
+
+État 89
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   38  | E MUL E .
+   39  | E . DIV E
+
+    $défaut  réduction par utilisation de la règle 38 (E)
+
+
+État 90
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   39  | E DIV E .
+
+    $défaut  réduction par utilisation de la règle 39 (E)
+
+
+État 91
+
+   35 E: E . RELOP E
+   35  | E RELOP E .
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+
+    ADD  décalage et aller à l'état 58
+    SUB  décalage et aller à l'état 59
+    MUL  décalage et aller à l'état 60
+    DIV  décalage et aller à l'état 61
+
+    $défaut  réduction par utilisation de la règle 35 (E)
+
+
+État 92
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   76 aff: selection AFFECT E . SCOL
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    SCOL   décalage et aller à l'état 113
+    RELOP  décalage et aller à l'état 63
+
+
+État 93
+
+   47 envoi: ELight POINT ID . BRACO listEOpt BRACC
+   49 selection: ELight POINT ID .
+
+    BRACO  décalage et aller à l'état 114
+
+    $défaut  réduction par utilisation de la règle 49 (selection)
+
+
+État 94
+
+   66 bloc: CBRACO listDecl IS listInst . CBRACC
+
+    CBRACC  décalage et aller à l'état 115
+
+
+État 95
+
+   14 param: VAR ID COL . IDCLASS
+
+    IDCLASS  décalage et aller à l'état 116
+
+
+État 96
+
+   13 param: ID COL IDCLASS .
+
+    $défaut  réduction par utilisation de la règle 13 (param)
+
+
+État 97
+
+   15 heritOpt: EXT . ID
+
+    ID  décalage et aller à l'état 117
+
+
+État 98
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt . IS CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    IS  décalage et aller à l'état 118
+
+
+État 99
+
+   12 listParam: param COMA listParam .
+
+    $défaut  réduction par utilisation de la règle 12 (listParam)
+
+
+État 100
+
+   24 champ: VAR ID . COL IDCLASS SCOL
+
+    COL  décalage et aller à l'état 119
+
+
+État 101
+
+   79 defConstObj: DEF . IDCLASS IS CBRACO listOptInst CBRACC
+
+    IDCLASS  décalage et aller à l'état 120
+
+
+État 102
+
+   78 defObj: OBJ IDCLASS IS CBRACO listOptChamps defConstObj . listOptMeth CBRACC
+
+    OVR  décalage et aller à l'état 121
+
+    DEF       réduction par utilisation de la règle 30 (overrideOpt)
+    $défaut  réduction par utilisation de la règle 26 (listOptMeth)
+
+    listOptMeth  aller à l'état 122
+    listMeth     aller à l'état 123
+    overrideOpt  aller à l'état 124
+    methode      aller à l'état 125
+
+
+État 103
+
+   23 listChamps: champ listChamps .
+
+    $défaut  réduction par utilisation de la règle 23 (listChamps)
+
+
+État 104
+
+   64 inst: IF E THEN inst . ELSE inst
+
+    ELSE  décalage et aller à l'état 126
+
+
+État 105
+
+   42 E: BRACO IDCLASS E BRACC .
+
+    $défaut  réduction par utilisation de la règle 42 (E)
+
+
+État 106
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   52 listE: E .
+   53      | E . COMA listE
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    COMA   décalage et aller à l'état 127
+    RELOP  décalage et aller à l'état 63
+
+    $défaut  réduction par utilisation de la règle 52 (listE)
+
+
+État 107
+
+   59 instanciation: NEW IDCLASS BRACO listEOpt . BRACC
+
+    BRACC  décalage et aller à l'état 128
+
+
+État 108
+
+   50 listEOpt: listE .
+
+    $défaut  réduction par utilisation de la règle 50 (listEOpt)
+
+
+État 109
+
+   77 aff: ID AFFECT E SCOL .
+
+    $défaut  réduction par utilisation de la règle 77 (aff)
+
+
+État 110
+
+   74 expOpt: AFFECT . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 129
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 111
+
+   73 decl: ID COL IDCLASS expOpt . SCOL
+
+    SCOL  décalage et aller à l'état 130
+
+
+État 112
+
+   48 envoi: IDCLASS POINT ID BRACO . listEOpt BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 51 (listEOpt)
+
+    E              aller à l'état 106
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    listEOpt       aller à l'état 131
+    listE          aller à l'état 108
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 113
+
+   76 aff: selection AFFECT E SCOL .
+
+    $défaut  réduction par utilisation de la règle 76 (aff)
+
+
+État 114
+
+   47 envoi: ELight POINT ID BRACO . listEOpt BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 51 (listEOpt)
+
+    E              aller à l'état 106
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    listEOpt       aller à l'état 132
+    listE          aller à l'état 108
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 115
+
+   66 bloc: CBRACO listDecl IS listInst CBRACC .
+
+    $défaut  réduction par utilisation de la règle 66 (bloc)
+
+
+État 116
+
+   14 param: VAR ID COL IDCLASS .
+
+    $défaut  réduction par utilisation de la règle 14 (param)
+
+
+État 117
+
+   15 heritOpt: EXT ID .
+
+    $défaut  réduction par utilisation de la règle 15 (heritOpt)
+
+
+État 118
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS . CBRACO listOptChamps defConst listOptMeth CBRACC
+
+    CBRACO  décalage et aller à l'état 133
+
+
+État 119
+
+   24 champ: VAR ID COL . IDCLASS SCOL
+
+    IDCLASS  décalage et aller à l'état 134
+
+
+État 120
+
+   79 defConstObj: DEF IDCLASS . IS CBRACO listOptInst CBRACC
+
+    IS  décalage et aller à l'état 135
+
+
+État 121
+
+   29 overrideOpt: OVR .
+
+    $défaut  réduction par utilisation de la règle 29 (overrideOpt)
+
+
+État 122
+
+   78 defObj: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth . CBRACC
+
+    CBRACC  décalage et aller à l'état 136
+
+
+État 123
+
+   25 listOptMeth: listMeth .
+
+    $défaut  réduction par utilisation de la règle 25 (listOptMeth)
+
+
+État 124
+
+   31 methode: overrideOpt . DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt . DEF ID BRACO listOptParam BRACC nomClasseOpt IS bloc
+
+    DEF  décalage et aller à l'état 137
+
+
+État 125
+
+   27 listMeth: methode .
+   28         | methode . listMeth
+
+    OVR  décalage et aller à l'état 121
+
+    DEF       réduction par utilisation de la règle 30 (overrideOpt)
+    $défaut  réduction par utilisation de la règle 27 (listMeth)
+
+    listMeth     aller à l'état 138
+    overrideOpt  aller à l'état 124
+    methode      aller à l'état 125
+
+
+État 126
+
+   64 inst: IF E THEN inst ELSE . inst
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 139
+    bloc           aller à l'état 34
+    aff            aller à l'état 39
+
+
+État 127
+
+   53 listE: E COMA . listE
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 106
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    listE          aller à l'état 140
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 128
+
+   59 instanciation: NEW IDCLASS BRACO listEOpt BRACC .
+
+    $défaut  réduction par utilisation de la règle 59 (instanciation)
+
+
+État 129
+
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+   74 expOpt: AFFECT E .
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    RELOP  décalage et aller à l'état 63
+
+    $défaut  réduction par utilisation de la règle 74 (expOpt)
+
+
+État 130
+
+   73 decl: ID COL IDCLASS expOpt SCOL .
+
+    $défaut  réduction par utilisation de la règle 73 (decl)
+
+
+État 131
+
+   48 envoi: IDCLASS POINT ID BRACO listEOpt . BRACC
+
+    BRACC  décalage et aller à l'état 141
+
+
+État 132
+
+   47 envoi: ELight POINT ID BRACO listEOpt . BRACC
+
+    BRACC  décalage et aller à l'état 142
+
+
+État 133
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO . listOptChamps defConst listOptMeth CBRACC
+
+    VAR  décalage et aller à l'état 76
+
+    $défaut  réduction par utilisation de la règle 21 (listOptChamps)
+
+    listOptChamps  aller à l'état 143
+    listChamps     aller à l'état 78
+    champ          aller à l'état 79
+
+
+État 134
+
+   24 champ: VAR ID COL IDCLASS . SCOL
+
+    SCOL  décalage et aller à l'état 144
+
+
+État 135
+
+   79 defConstObj: DEF IDCLASS IS . CBRACO listOptInst CBRACC
+
+    CBRACO  décalage et aller à l'état 145
+
+
+État 136
+
+   78 defObj: OBJ IDCLASS IS CBRACO listOptChamps defConstObj listOptMeth CBRACC .
+
+    $défaut  réduction par utilisation de la règle 78 (defObj)
+
+
+État 137
+
+   31 methode: overrideOpt DEF . ID BRACO listOptParam BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt DEF . ID BRACO listOptParam BRACC nomClasseOpt IS bloc
+
+    ID  décalage et aller à l'état 146
+
+
+État 138
+
+   28 listMeth: methode listMeth .
+
+    $défaut  réduction par utilisation de la règle 28 (listMeth)
+
+
+État 139
+
+   64 inst: IF E THEN inst ELSE inst .
+
+    $défaut  réduction par utilisation de la règle 64 (inst)
+
+
+État 140
+
+   53 listE: E COMA listE .
+
+    $défaut  réduction par utilisation de la règle 53 (listE)
+
+
+État 141
+
+   48 envoi: IDCLASS POINT ID BRACO listEOpt BRACC .
+
+    $défaut  réduction par utilisation de la règle 48 (envoi)
+
+
+État 142
+
+   47 envoi: ELight POINT ID BRACO listEOpt BRACC .
+
+    $défaut  réduction par utilisation de la règle 47 (envoi)
+
+
+État 143
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps . defConst listOptMeth CBRACC
+
+    DEF  décalage et aller à l'état 147
+
+    defConst  aller à l'état 148
+
+
+État 144
+
+   24 champ: VAR ID COL IDCLASS SCOL .
+
+    $défaut  réduction par utilisation de la règle 24 (champ)
+
+
+État 145
+
+   79 defConstObj: DEF IDCLASS IS CBRACO . listOptInst CBRACC
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 68 (listOptInst)
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 33
+    bloc           aller à l'état 34
+    listOptInst    aller à l'état 149
+    listInst       aller à l'état 36
+    aff            aller à l'état 39
+
+
+État 146
+
+   31 methode: overrideOpt DEF ID . BRACO listOptParam BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt DEF ID . BRACO listOptParam BRACC nomClasseOpt IS bloc
+
+    BRACO  décalage et aller à l'état 150
+
+
+État 147
+
+   17 defConst: DEF . IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
+
+    IDCLASS  décalage et aller à l'état 151
+
+
+État 148
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst . listOptMeth CBRACC
+
+    OVR  décalage et aller à l'état 121
+
+    DEF       réduction par utilisation de la règle 30 (overrideOpt)
+    $défaut  réduction par utilisation de la règle 26 (listOptMeth)
+
+    listOptMeth  aller à l'état 152
+    listMeth     aller à l'état 123
+    overrideOpt  aller à l'état 124
+    methode      aller à l'état 125
+
+
+État 149
+
+   79 defConstObj: DEF IDCLASS IS CBRACO listOptInst . CBRACC
+
+    CBRACC  décalage et aller à l'état 153
+
+
+État 150
+
+   31 methode: overrideOpt DEF ID BRACO . listOptParam BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt DEF ID BRACO . listOptParam BRACC nomClasseOpt IS bloc
+
+    VAR  décalage et aller à l'état 40
+    ID   décalage et aller à l'état 41
+
+    $défaut  réduction par utilisation de la règle 10 (listOptParam)
+
+    listOptParam  aller à l'état 154
+    listParam     aller à l'état 43
+    param         aller à l'état 44
+
+
+État 151
+
+   17 defConst: DEF IDCLASS . BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
+
+    BRACO  décalage et aller à l'état 155
+
+
+État 152
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth . CBRACC
+
+    CBRACC  décalage et aller à l'état 156
+
+
+État 153
+
+   79 defConstObj: DEF IDCLASS IS CBRACO listOptInst CBRACC .
+
+    $défaut  réduction par utilisation de la règle 79 (defConstObj)
+
+
+État 154
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam . BRACC COL IDCLASS AFFECT E
+   32        | overrideOpt DEF ID BRACO listOptParam . BRACC nomClasseOpt IS bloc
+
+    BRACC  décalage et aller à l'état 157
+
+
+État 155
+
+   17 defConst: DEF IDCLASS BRACO . listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC
+
+    VAR  décalage et aller à l'état 40
+    ID   décalage et aller à l'état 41
+
+    $défaut  réduction par utilisation de la règle 10 (listOptParam)
+
+    listOptParam  aller à l'état 158
+    listParam     aller à l'état 43
+    param         aller à l'état 44
+
+
+État 156
+
+    8 defClasse: CLASS IDCLASS BRACO listOptParam BRACC heritOpt IS CBRACO listOptChamps defConst listOptMeth CBRACC .
+
+    $défaut  réduction par utilisation de la règle 8 (defClasse)
+
+
+État 157
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC . COL IDCLASS AFFECT E
+   32        | overrideOpt DEF ID BRACO listOptParam BRACC . nomClasseOpt IS bloc
+
+    COL  décalage et aller à l'état 159
+
+    $défaut  réduction par utilisation de la règle 34 (nomClasseOpt)
+
+    nomClasseOpt  aller à l'état 160
+
+
+État 158
+
+   17 defConst: DEF IDCLASS BRACO listOptParam . BRACC superClasseOpt IS CBRACO listOptInst CBRACC
+
+    BRACC  décalage et aller à l'état 161
+
+
+État 159
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC COL . IDCLASS AFFECT E
+   33 nomClasseOpt: COL . IDCLASS
+
+    IDCLASS  décalage et aller à l'état 162
+
+
+État 160
+
+   32 methode: overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt . IS bloc
+
+    IS  décalage et aller à l'état 163
+
+
+État 161
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC . superClasseOpt IS CBRACO listOptInst CBRACC
+
+    IDCLASS  décalage et aller à l'état 164
+
+    $défaut  réduction par utilisation de la règle 19 (superClasseOpt)
+
+    superClasseOpt  aller à l'état 165
+
+
+État 162
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS . AFFECT E
+   33 nomClasseOpt: COL IDCLASS .
+
+    AFFECT  décalage et aller à l'état 166
+
+    $défaut  réduction par utilisation de la règle 33 (nomClasseOpt)
+
+
+État 163
+
+   32 methode: overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt IS . bloc
+
+    CBRACO  décalage et aller à l'état 12
+
+    bloc  aller à l'état 167
+
+
+État 164
+
+   18 superClasseOpt: IDCLASS . BRACO listEOpt BRACC
+
+    BRACO  décalage et aller à l'état 168
+
+
+État 165
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt . IS CBRACO listOptInst CBRACC
+
+    IS  décalage et aller à l'état 169
+
+
+État 166
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT . E
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    E              aller à l'état 170
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 167
+
+   32 methode: overrideOpt DEF ID BRACO listOptParam BRACC nomClasseOpt IS bloc .
+
+    $défaut  réduction par utilisation de la règle 32 (methode)
+
+
+État 168
+
+   18 superClasseOpt: IDCLASS BRACO . listEOpt BRACC
+
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    ID       décalage et aller à l'état 46
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 51 (listEOpt)
+
+    E              aller à l'état 106
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 48
+    listEOpt       aller à l'état 171
+    listE          aller à l'état 108
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+
+
+État 169
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS . CBRACO listOptInst CBRACC
+
+    CBRACO  décalage et aller à l'état 172
+
+
+État 170
+
+   31 methode: overrideOpt DEF ID BRACO listOptParam BRACC COL IDCLASS AFFECT E .
+   35 E: E . RELOP E
+   36  | E . ADD E
+   37  | E . SUB E
+   38  | E . MUL E
+   39  | E . DIV E
+
+    ADD    décalage et aller à l'état 58
+    SUB    décalage et aller à l'état 59
+    MUL    décalage et aller à l'état 60
+    DIV    décalage et aller à l'état 61
+    RELOP  décalage et aller à l'état 63
+
+    $défaut  réduction par utilisation de la règle 31 (methode)
+
+
+État 171
+
+   18 superClasseOpt: IDCLASS BRACO listEOpt . BRACC
+
+    BRACC  décalage et aller à l'état 173
+
+
+État 172
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO . listOptInst CBRACC
+
+    IF       décalage et aller à l'état 17
+    ADD      décalage et aller à l'état 18
+    SUB      décalage et aller à l'état 19
+    BRACO    décalage et aller à l'état 20
+    CBRACO   décalage et aller à l'état 12
+    NEW      décalage et aller à l'état 21
+    STRG     décalage et aller à l'état 22
+    RETURN   décalage et aller à l'état 23
+    ID       décalage et aller à l'état 66
+    IDCLASS  décalage et aller à l'état 25
+    CST      décalage et aller à l'état 26
+
+    $défaut  réduction par utilisation de la règle 68 (listOptInst)
+
+    E              aller à l'état 27
+    appel          aller à l'état 28
+    envoi          aller à l'état 29
+    selection      aller à l'état 30
+    ELight         aller à l'état 31
+    instanciation  aller à l'état 32
+    inst           aller à l'état 33
+    bloc           aller à l'état 34
+    listOptInst    aller à l'état 174
+    listInst       aller à l'état 36
+    aff            aller à l'état 39
+
+
+État 173
+
+   18 superClasseOpt: IDCLASS BRACO listEOpt BRACC .
+
+    $défaut  réduction par utilisation de la règle 18 (superClasseOpt)
+
+
+État 174
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst . CBRACC
+
+    CBRACC  décalage et aller à l'état 175
+
+
+État 175
+
+   17 defConst: DEF IDCLASS BRACO listOptParam BRACC superClasseOpt IS CBRACO listOptInst CBRACC .
+
+    $défaut  réduction par utilisation de la règle 17 (defConst)
