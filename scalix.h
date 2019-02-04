@@ -167,6 +167,7 @@ void codeMain(TreeP tree);
 void Code(TreeP tree);
 
 ClassP rechercheClasse(char* nom);
+ObjP rechercheObjet(char* nom);
 MethodesP rechercheMethode(char* nomClasse, char* nomMeth);
 VarDeclP rechercheChamp(char* nomClasse, char* nomChamp);
 
@@ -181,6 +182,7 @@ VarDeclP makeList(VarDeclP element, VarDeclP next); //ToDo: modifie .c
 MethodesP makeListMeth(MethodesP element, MethodesP next); //ToDo: modifie .c
 
 
-VarDeclP listeSC;// = NIL(VarDecl);
+VarDeclP listeSC;
+VarDeclP listeObjet;
 
 #endif //PROJET_SCALIX_H

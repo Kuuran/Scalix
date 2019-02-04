@@ -546,6 +546,17 @@ ClassP rechercheClasse(char* nom){
     return NIL(Class);
 }
 
+ObjP rechercheObjet(char* nom){
+    VarDeclP tmp = listeObjet;
+    while(tmp != NIL(VarDecl)){
+        if(tmp->value.t == OBJECT && tmp->value.u.Object->nom == nom){
+            return tmp->value.u.Object;
+        }
+        tmp = tmp->next;
+    }
+    return NIL(Obj);
+}
+
 MethodesP rechercheMethode(char* nomC, char* nomM){
     ClassP cp = rechercheClasse(nomC);
 
@@ -662,11 +673,15 @@ ClassP makeClass(char* nom, VarDeclP lparamConst, VarDeclP donneesMembres, Metho
         tmp->next->next = NIL(VarDecl);
         tmp->next->value.u.Classe = result;
         tmp->next->name = nom;
+        tmp->next->element = INCONNU;
+        tmp->next->value.t = CLASSE;
     }else{
         listeSC = malloc(sizeof(VarDeclP));
         listeSC->next = NIL(VarDecl);
         listeSC->value.u.Classe = result;
         listeSC->name = nom;
+        listeSC->element = INCONNU;
+        listeSC->value.t = CLASSE;
     }
 
     return result;
@@ -678,6 +693,25 @@ ObjP makeObj(char* nom, VarDeclP champs, MethodesP constructeur, MethodesP metho
 	result->sesChamps = champs;
 	result->sesMethodes = methodes;
 	result->nom = nom;
+
+	if(listeObjet == NIL(VarDecl)){
+	    listeObjet = malloc(sizeof(VarDeclP));
+	    listeObjet->element = INCONNU;
+	    listeObjet->value.t = OBJECT;
+	    listeObjet->value.u.Object = result;
+	    listeObjet->next = NIL(VarDecl);
+	} else{
+	    VarDeclP tmp = listeObjet;
+	    while (tmp->next == NIL(VarDecl)){
+	        tmp = tmp->next;
+	    }
+        tmp->next = malloc(sizeof(VarDeclP));
+        tmp->next->element = INCONNU;
+        tmp->next->value.t = OBJECT;
+        tmp->next->value.u.Object = result;
+        tmp->next->next = NIL(VarDecl);
+	}
+
 	return result;
 }
 
@@ -690,7 +724,7 @@ MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, T
 	result->ovr = ovr;
 	result->nom = nom;
 	result->sesParam = params;
-	ObjetP obj = rechercheObjet(typeRetour);
+	ObjP obj = rechercheObjet(typeRetour);
 
 	if(typeRetour == "Integer")
 		result->typeRetour.t = INTEGER;
@@ -698,8 +732,8 @@ MethodesP makeMethodes(bool ovr, char* nom, VarDeclP params, char* typeRetour, T
 		result->typeRetour.t = STRING;
 	else if(classP != NIL(Class))
 		result->typeRetour.t = CLASSE;
-	else if(obj != NIL(Objet))
-		result->typeRetour.t = OBJET;
+	else if(obj != NIL(Obj))
+		result->typeRetour.t = OBJECT;
 	else
 		exit(EXIT_FAILURE);
 
@@ -712,7 +746,7 @@ VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var)
 {
 	VarDeclP res = malloc(sizeof(VarDeclP));
 	ClassP classP = rechercheClasse(type);
-	ObjetP obj = rechercheObjet(type4);
+	ObjP obj = rechercheObjet(type);
 
 	res->name = name;
 	res->element = element;
@@ -722,8 +756,8 @@ VarDeclP makeVarDecl(char* name, char* type, enum elmt element, bool var)
 		res->value.t = STRING;
 	else if(classP != NIL(Class))
 		res->value.t = CLASSE;
-	else if(obj != NIL(Objet))
-		res->value.t = OBJET;
+	else if(obj != NIL(Obj))
+		res->value.t = OBJECT;
 
 	return res;
 }
