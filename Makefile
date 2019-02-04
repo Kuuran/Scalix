@@ -33,4 +33,4 @@ test_lex.o : test_lex.c scalix.h scalix_y.h
 .Phony: clean
 
 clean:
-	rm -f *~ scalix ./scalix.o scalix_l.* scalix_y.* test_lex scalix_y.output
+	rm -f *~ scalix ./scalix.o scalix_l.* scalix_y.* test_lex test_lex.o scalix_y.output

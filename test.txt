@@ -5,3 +5,9 @@ x := 1;
 class Hello
 if(1=1) then x := 5;
 else x := 7;
+// ceci est un commentaire
+/* ceci est un bloc
+
+hello */
+
+a := 1;
